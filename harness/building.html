@@ -199,7 +199,33 @@ export XWIN_CACHE=&quot;/path/to/sdk&quot;
 </code></pre>
 <p>That will probably take a while to fetch dependencies and build everything. Once it's done, you should have a <code>build</code> folder in the root of the <code>dawn-build</code> repo. This should contain, among other things, a <code>gen</code> folder with some generated code files (the header files are the important bits) and a <code>lib</code> folder with a bunch of static libraries in it.</p>
 <h2 id="harness"><a class="header" href="#harness">Harness</a></h2>
-<p>TODO</p>
+<p>Once you've built the dawn libraries, you can build the harness. First, there's a couple of environment variables to set:</p>
+<pre><code class="language-sh">export DAWN_SRC_DIR=&quot;/path/to/dawn-build/dawn&quot;
+export DAWN_BUILD_DIR=&quot;/path/to/dawn-build/build&quot;
+</code></pre>
+<p>If building for Windows, make sure to also set the following variables:</p>
+<pre><code class="language-sh">export CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS=&quot;\
+    -C linker=/path/to/llvm/bin/lld-link \
+    -Lnative=/path/to/sdk/splat/crt/lib/x86_64 \
+    -Lnative=/path/to/sdk/splat/sdk/lib/ucrt/x86_64 \
+    -Lnative=/path/to/sdk/splat/sdk/lib/um/x86_64&quot;
+export CXX_x86_64_pc_windows_msvc=&quot;/path/to/llvm/bin/clang-cl&quot;
+export CXXFLAGS_x86_64_pc_windows_msvc=&quot;\
+    /imsvc /path/to/sdk/splat/crt/include \
+    /imsvc /path/to/sdk/splat/sdk/include/ucrt&quot;
+export AR_x86_64_pc_windows_msvc=&quot;/path/to/llvm/bin/llvm-lib&quot;
+</code></pre>
+<p>Then you can run:</p>
+<pre><code class="language-sh">$ cargo build -p harness --release
+</code></pre>
+<p>to build for the host platform, or:</p>
+<pre><code class="language-sh">$ cargo build -p harness --release --target x86_64-pc-windows-msvc
+</code></pre>
+<p>to build explicitly for Windows. Alternatively, you can set:</p>
+<pre><code class="language-sh">export CARGO_BUILD_TARGET=&quot;x86_64-pc-windows-msvc&quot;
+</code></pre>
+<p>to avoid needing to pass <code>--target &lt;target&gt;</code> explicitly on the command line.</p>
+<p>The harness executable will be contained in <code>target/release</code> (or <code>target/x86_64-pc-windows-msvc/release</code> if <code>CARGO_BUILD_TARGET</code> was set like above).</p>
 
                     </main>
 
