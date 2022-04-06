@@ -77,7 +77,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="harness/index.html"><strong aria-hidden="true">2.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="harness/building.html"><strong aria-hidden="true">2.1.</strong> Building</a></li><li class="chapter-item expanded "><a href="harness/usage.html"><strong aria-hidden="true">2.2.</strong> Usage</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="harness/index.html"><strong aria-hidden="true">2.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="harness/building.html"><strong aria-hidden="true">2.1.</strong> Building</a></li><li class="chapter-item expanded "><a href="harness/usage.html"><strong aria-hidden="true">2.2.</strong> Usage</a></li><li class="chapter-item expanded "><a href="harness/swiftshader.html"><strong aria-hidden="true">2.3.</strong> Swiftshader</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -249,6 +249,61 @@ export AR_x86_64_pc_windows_msvc=&quot;/path/to/llvm/bin/llvm-lib&quot;
 <p>to avoid needing to pass <code>--target &lt;target&gt;</code> explicitly on the command line.</p>
 <p>The harness executable will be contained in <code>target/release</code> (or <code>target/x86_64-pc-windows-msvc/release</code> if the build target was set to windows like above).</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="usage-1"><a class="header" href="#usage-1">Usage</a></h1>
+<p>In the simplest case, you can just execute a shader by passing the path to the shader file to the harness executable. If no path is provided, the shader will be read from <code>stdin</code>.</p>
+<pre><code class="language-sh">$ harness /path/to/shader.wgsl
+</code></pre>
+<p>This works if the shader has no inputs or outputs, but will probably fail otherwise.</p>
+<p>More generally, two things are required to execute a shader:</p>
+<ol>
+<li>The WGSL source code</li>
+<li>A JSON metadata object describing the shader's resource interface</li>
+</ol>
+<p>The metadata will be used to setup the pipeline and required buffers, and optionally to initialise the buffer values.</p>
+<p>For example, the following shader contains a uniform buffer and a storage buffer, acting as the shader's inputs and outputs respectively. The shader has a single bind group, with <code>input</code> bound to slot 0 and <code>output</code> bound to slot 1. Refer to the <a href="https://gpuweb.github.io/gpuweb/#pipeline-layout">WebGPU docs</a> for more info about resource layouts.</p>
+<pre><pre class="playground"><code class="language-rust">struct Buffer {
+    value: u32,
+};
+
+@group(0)
+@binding(0)
+var&lt;uniform&gt; input: Buffer;
+
+@group(0)
+@binding(1)
+var&lt;storage, read_write&gt; output: Buffer;
+
+@stage(compute)
+@workgroup_size(1)
+fn main() {
+    output.value = input.value;
+}
+</code></pre></pre>
+<p>This shader can be described by the following metadata object:</p>
+<pre><code class="language-json">{
+  &quot;resources&quot;: [
+    {
+      &quot;kind&quot;: &quot;UniformBuffer&quot;,
+      &quot;group&quot;: 0,
+      &quot;binding&quot;: 0,
+      &quot;size&quot;: 4,
+      &quot;init&quot;: [100, 186, 236, 132]
+    },
+    {
+      &quot;kind&quot;: &quot;StorageBuffer&quot;,
+      &quot;group&quot;: 0,
+      &quot;binding&quot;: 1,
+      &quot;size&quot;: 4,
+      &quot;init&quot;: null
+    }
+  ]
+}
+</code></pre>
+<p>The root object contains a single <code>resources</code> field which is an array of resource objects. Each resource object must specify its <code>group</code>, <code>binding</code> and <code>size</code> in bytes, as well as the <code>kind</code> which may be one of <code>UniformBuffer</code> or <code>StorageBuffer</code>. The <code>init</code> field can specify a byte array which will be used to initialise the buffer if not null. This is useful for specifying inputs.</p>
+<p>By default, when executing a shader with an explicit path, the harness will look for a json file with the same name and parent directory as the shader. For example, given a shader file at <code>/path/to/shader.wgsl</code>, the harness will look for the metadata file at <code>/path/to/shader.json</code>.</p>
+<p>You can also specify the metadata file path explicitly by passing <code>--metadata /path/to/metadata.json</code> on the command line, or even specify the json object inline: <code>--metadata '{&quot;resources&quot;: [...]}'</code>.</p>
+<h2 id="backend-selection"><a class="header" href="#backend-selection">Backend selection</a></h2>
+<p>TODO</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="swiftshader"><a class="header" href="#swiftshader">Swiftshader</a></h1>
 <p>TODO</p>
 
                     </main>
