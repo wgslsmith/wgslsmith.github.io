@@ -240,17 +240,22 @@ export CXXFLAGS_x86_64_pc_windows_msvc=&quot;\
     /imsvc /path/to/sdk/splat/sdk/include/ucrt&quot;
 export AR_x86_64_pc_windows_msvc=&quot;/path/to/llvm/bin/llvm-lib&quot;
 </code></pre>
-<p>Then you can run:</p>
-<pre><code class="language-sh">$ cargo build -p harness --release
+<p>Make sure to clone the <code>wgslsmith</code> repo with submodules:</p>
+<pre><code class="language-sh">$ git clone --recursive https://github.com/wgslsmith/wgslsmith
+# or in an existing repo
+$ git submodule update --init --recursive
 </code></pre>
-<p>to build for the host platform, or:</p>
-<pre><code class="language-sh">$ cargo build -p harness --release --target x86_64-pc-windows-msvc
+<p>Then, to build for the host platform, you can run:</p>
+<pre><code class="language-sh">$ cd harness
+$ cargo build --release
 </code></pre>
-<p>to build explicitly for Windows. Alternatively, you can set:</p>
+<p>If cross compiling for Windows, you need to instead set the target explicitly:</p>
+<pre><code class="language-sh">$ cargo build --release --target x86_64-pc-windows-msvc
+</code></pre>
+<p>Alternatively, you can set the following environment variable to avoid needing to pass <code>--target &lt;target&gt;</code> explicitly on the command line:</p>
 <pre><code class="language-sh">export CARGO_BUILD_TARGET=&quot;x86_64-pc-windows-msvc&quot;
 </code></pre>
-<p>to avoid needing to pass <code>--target &lt;target&gt;</code> explicitly on the command line.</p>
-<p>The harness executable will be contained in <code>target/release</code> (or <code>target/x86_64-pc-windows-msvc/release</code> if the build target was set to windows like above).</p>
+<p>The harness executable will be contained in <code>harness/target/release</code> (or <code>harness/target/&lt;target&gt;/release</code> when cross compiling).</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="usage-1"><a class="header" href="#usage-1">Usage</a></h1>
 <p>In the simplest case, you can just execute a shader by passing the path to the shader file to the harness executable. If no path is provided, the shader will be read from <code>stdin</code>.</p>
 <pre><code class="language-sh">$ harness /path/to/shader.wgsl
