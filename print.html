@@ -307,6 +307,14 @@ fn main() {
 }
 </code></pre>
 <p>The root object contains a single <code>resources</code> field which is an array of resource objects. Each resource object must specify its <code>group</code>, <code>binding</code> and <code>size</code> in bytes, as well as the <code>kind</code> which may be one of <code>UniformBuffer</code> or <code>StorageBuffer</code>. The <code>init</code> field can specify a byte array which will be used to initialise the buffer if not null. This is useful for specifying inputs.</p>
+<div class="admonition warning">
+<div class="admonition-title">
+<p>Alignment</p>
+</div>
+<div>
+<p>WGSL has some strict rules about alignment for types used with uniform and storage buffers (see <a href="https://gpuweb.github.io/gpuweb/wgsl/#address-space-layout-constraints">here</a>). Make sure to consider this when calculating the size of buffers.</p>
+</div>
+</div>
 <p>By default, when executing a shader with an explicit path, the harness will look for a json file with the same name and parent directory as the shader. For example, given a shader file at <code>/path/to/shader.wgsl</code>, the harness will look for the metadata file at <code>/path/to/shader.json</code>.</p>
 <p>You can also specify the metadata file path explicitly by passing <code>--metadata /path/to/metadata.json</code> on the command line, or even specify the json object inline: <code>--metadata '{&quot;resources&quot;: [...]}'</code>.</p>
 <h2 id="backend-selection"><a class="header" href="#backend-selection">Backend selection</a></h2>
