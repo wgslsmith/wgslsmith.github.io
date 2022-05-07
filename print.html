@@ -156,6 +156,11 @@ $ cargo build -p wgslsmith --release
 $ target/release/wgslsmith --help
 </code></pre>
 <p>See the <a href="https://wgslsmith.github.io/">docs</a> for detailed instructions on building and using the test harness and fuzzing tools.</p>
+<h2 id="development"><a class="header" href="#development">Development</a></h2>
+<p>To setup git hooks, run:</p>
+<pre><code>$ git config core.hooksPath .githooks
+</code></pre>
+<p>Hooks currently assume that <a href="https://direnv.net/">direnv</a> is installed.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="harness"><a class="header" href="#harness">Harness</a></h1>
 <p>The test harness is used to run shader programs within a WebGPU pipeline. The harness is flexible and can be used for shaders with different inputs and outputs by providing a JSON description of the shader's I/O interface.</p>
 <p>The harness will execute the shaders against multiple WebGPU implementations/configurations and compare the outputs to detect mismatches.</p>
