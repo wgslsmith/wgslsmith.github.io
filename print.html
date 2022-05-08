@@ -77,7 +77,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="harness/index.html"><strong aria-hidden="true">2.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="harness/building.html"><strong aria-hidden="true">2.1.</strong> Building</a></li><li class="chapter-item expanded "><a href="harness/usage.html"><strong aria-hidden="true">2.2.</strong> Usage</a></li><li class="chapter-item expanded "><a href="harness/swiftshader.html"><strong aria-hidden="true">2.3.</strong> Swiftshader</a></li><li class="chapter-item expanded "><a href="harness/test-case-reduction.html"><strong aria-hidden="true">2.4.</strong> Test case reduction</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="harness/index.html"><strong aria-hidden="true">2.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="harness/building.html"><strong aria-hidden="true">2.1.</strong> Building</a></li><li class="chapter-item expanded "><a href="harness/usage.html"><strong aria-hidden="true">2.2.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="harness/configurations.html"><strong aria-hidden="true">2.3.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="harness/test-case-reduction.html"><strong aria-hidden="true">2.4.</strong> Test case reduction</a></li><li class="chapter-item expanded "><a href="harness/swiftshader.html"><strong aria-hidden="true">2.5.</strong> Swiftshader</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -261,9 +261,9 @@ $ cargo build --release
 <pre><code class="language-sh">export CARGO_BUILD_TARGET=&quot;x86_64-pc-windows-msvc&quot;
 </code></pre>
 <p>The harness executable will be contained in <code>harness/target/release</code> (or <code>harness/target/&lt;target&gt;/release</code> when cross compiling).</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="usage-1"><a class="header" href="#usage-1">Usage</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="basic-usage"><a class="header" href="#basic-usage">Basic usage</a></h1>
 <p>In the simplest case, you can just execute a shader by passing the path to the shader file to the harness executable. If no path is provided, the shader will be read from <code>stdin</code>.</p>
-<pre><code class="language-sh">$ harness /path/to/shader.wgsl
+<pre><code class="language-sh">$ harness run /path/to/shader.wgsl
 </code></pre>
 <p>This works if the shader has no inputs or outputs, but will probably fail otherwise.</p>
 <p>More generally, two things are required to execute a shader:</p>
@@ -321,20 +321,50 @@ fn main() {
 </div>
 </div>
 <p>By default, when executing a shader with an explicit path, the harness will look for a json file with the same name and parent directory as the shader. For example, given a shader file at <code>/path/to/shader.wgsl</code>, the harness will look for the metadata file at <code>/path/to/shader.json</code>.</p>
-<p>You can also specify the metadata file path explicitly by passing <code>--metadata /path/to/metadata.json</code> on the command line, or even specify the json object inline: <code>--metadata '{&quot;resources&quot;: [...]}'</code>.</p>
-<h2 id="backend-selection"><a class="header" href="#backend-selection">Backend selection</a></h2>
-<p>TODO</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="swiftshader"><a class="header" href="#swiftshader">Swiftshader</a></h1>
-<p>TODO</p>
+<p>You can also specify the metadata file path explicitly by passing <code>/path/to/metadata.json</code> as the second positional argument on the command line, or even specify the json object inline: <code>'{&quot;resources&quot;: [...]}'</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="configurations"><a class="header" href="#configurations">Configurations</a></h1>
+<p>The harness will execute the input shader against one or more configurations, and compare the results of the output buffers for each configuration to detect possible miscompilation bugs.</p>
+<p>A configuration is defined as the combination of a WebGPU implementation (such as dawn or wgpu) and a graphics adapter. The graphics adapter is identified by its backend type (D3D12, Metal, Vulkan) and a platform-specific integer identifier for the device.</p>
+<p>Use the <code>list</code> subcommand to get a list of available configurations on your machine.</p>
+<pre><code class="language-sh">$ harness list
+ID             | Adapter Name
+---------------+------------------------------
+wgpu:vk:9348   | NVIDIA GeForce RTX 3070
+wgpu:dx12:9348 | NVIDIA GeForce RTX 3070
+wgpu:dx12:140  | Microsoft Basic Render Driver
+dawn:dx12:9348 | NVIDIA GeForce RTX 3070
+dawn:dx12:140  | Microsoft Basic Render Driver
+dawn:vk:9348   | NVIDIA GeForce RTX 3070
+</code></pre>
+<p>On my machine there are three adapters available, corresponding to hardware Vulkan and D3D12 implementations as well as a D3D12 software implementation. The configuration IDs consist of the WebGPU implementation, the backend type, and the PCI ID for the adapter.</p>
+<p>By default, the harness will attempt to find the first available adapter for each combination of WebGPU implementation and backend type. Thus, all configurations above will be selected except for the D3D12 software adapter.</p>
+<p>To specify configurations manually, you can pass them on the command line using the <code>-c</code> option.</p>
+<pre><code class="language-sh">$ harness run test.wgsl -c wgpu:dx12:140 -c dawn:dx12:140 -c dawn:vk:9348
+executing wgpu:dx12:140
+outputs:
+  0: [2, 0, 0, 0]
+
+executing dawn:dx12:140
+outputs:
+  0: [2, 0, 0, 0]
+
+executing dawn:vk:9348
+outputs:
+  0: [2, 0, 0, 0]
+
+ok
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="test-case-reduction"><a class="header" href="#test-case-reduction">Test case reduction</a></h1>
 <p>Test case reduction tools such as <a href="https://embed.cs.utah.edu/creduce/">c-reduce</a> typically take an <em>interestingness</em> test as input, which returns <code>0</code> for a useful test case or <code>1</code> if the test case should be discarded.</p>
 <p>The harness can produce two types of errors:</p>
 <ul>
 <li>If the actual shader execution failed, this will manifest as a panic with exit code <code>101</code>.</li>
-<li>If the shader was successfully executed for all implementations but the outputs differ, the program will exit with code <code>1</code>.</li>
+<li>If the shader was successfully executed for all configurations but the outputs differ, the program will exit with code <code>1</code>.</li>
 </ul>
 <p>Otherwise, the program exits normally with code <code>0</code>.</p>
-<p>Normally when using this with a reduction tool, you will want to discard the shader if the harness returns <code>0</code> or <code>101</code>, since execution failure means that the reduction process probably produced an invalid program. Only the exits with <code>1</code> are likely to be interesting.</p>
+<p>Normally when using this with a reduction tool to find miscompilations, you will want to discard the shader if the harness returns <code>0</code> or <code>101</code>, since execution failure means that the reduction process probably produced an invalid program. Only the exits with <code>1</code> are likely to be interesting.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="swiftshader"><a class="header" href="#swiftshader">Swiftshader</a></h1>
+<p>TODO</p>
 
                     </main>
 

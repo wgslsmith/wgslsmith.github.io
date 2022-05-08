@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Usage - wgslsmith</title>
+        <title>Basic usage - wgslsmith</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../harness/index.html"><strong aria-hidden="true">2.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../harness/building.html"><strong aria-hidden="true">2.1.</strong> Building</a></li><li class="chapter-item expanded "><a href="../harness/usage.html" class="active"><strong aria-hidden="true">2.2.</strong> Usage</a></li><li class="chapter-item expanded "><a href="../harness/swiftshader.html"><strong aria-hidden="true">2.3.</strong> Swiftshader</a></li><li class="chapter-item expanded "><a href="../harness/test-case-reduction.html"><strong aria-hidden="true">2.4.</strong> Test case reduction</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../harness/index.html"><strong aria-hidden="true">2.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../harness/building.html"><strong aria-hidden="true">2.1.</strong> Building</a></li><li class="chapter-item expanded "><a href="../harness/usage.html" class="active"><strong aria-hidden="true">2.2.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="../harness/configurations.html"><strong aria-hidden="true">2.3.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="../harness/test-case-reduction.html"><strong aria-hidden="true">2.4.</strong> Test case reduction</a></li><li class="chapter-item expanded "><a href="../harness/swiftshader.html"><strong aria-hidden="true">2.5.</strong> Swiftshader</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -141,9 +141,9 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="usage"><a class="header" href="#usage">Usage</a></h1>
+                        <h1 id="basic-usage"><a class="header" href="#basic-usage">Basic usage</a></h1>
 <p>In the simplest case, you can just execute a shader by passing the path to the shader file to the harness executable. If no path is provided, the shader will be read from <code>stdin</code>.</p>
-<pre><code class="language-sh">$ harness /path/to/shader.wgsl
+<pre><code class="language-sh">$ harness run /path/to/shader.wgsl
 </code></pre>
 <p>This works if the shader has no inputs or outputs, but will probably fail otherwise.</p>
 <p>More generally, two things are required to execute a shader:</p>
@@ -201,9 +201,7 @@ fn main() {
 </div>
 </div>
 <p>By default, when executing a shader with an explicit path, the harness will look for a json file with the same name and parent directory as the shader. For example, given a shader file at <code>/path/to/shader.wgsl</code>, the harness will look for the metadata file at <code>/path/to/shader.json</code>.</p>
-<p>You can also specify the metadata file path explicitly by passing <code>--metadata /path/to/metadata.json</code> on the command line, or even specify the json object inline: <code>--metadata '{&quot;resources&quot;: [...]}'</code>.</p>
-<h2 id="backend-selection"><a class="header" href="#backend-selection">Backend selection</a></h2>
-<p>TODO</p>
+<p>You can also specify the metadata file path explicitly by passing <code>/path/to/metadata.json</code> as the second positional argument on the command line, or even specify the json object inline: <code>'{&quot;resources&quot;: [...]}'</code>.</p>
 
                     </main>
 
@@ -212,7 +210,7 @@ fn main() {
                             <a rel="prev" href="../harness/building.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                            <a rel="next" href="../harness/swiftshader.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../harness/configurations.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
@@ -224,7 +222,7 @@ fn main() {
                     <a rel="prev" href="../harness/building.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                    <a rel="next" href="../harness/swiftshader.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../harness/configurations.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

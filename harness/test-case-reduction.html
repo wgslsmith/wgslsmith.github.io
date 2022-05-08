@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../harness/index.html"><strong aria-hidden="true">2.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../harness/building.html"><strong aria-hidden="true">2.1.</strong> Building</a></li><li class="chapter-item expanded "><a href="../harness/usage.html"><strong aria-hidden="true">2.2.</strong> Usage</a></li><li class="chapter-item expanded "><a href="../harness/swiftshader.html"><strong aria-hidden="true">2.3.</strong> Swiftshader</a></li><li class="chapter-item expanded "><a href="../harness/test-case-reduction.html" class="active"><strong aria-hidden="true">2.4.</strong> Test case reduction</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../harness/index.html"><strong aria-hidden="true">2.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../harness/building.html"><strong aria-hidden="true">2.1.</strong> Building</a></li><li class="chapter-item expanded "><a href="../harness/usage.html"><strong aria-hidden="true">2.2.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="../harness/configurations.html"><strong aria-hidden="true">2.3.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="../harness/test-case-reduction.html" class="active"><strong aria-hidden="true">2.4.</strong> Test case reduction</a></li><li class="chapter-item expanded "><a href="../harness/swiftshader.html"><strong aria-hidden="true">2.5.</strong> Swiftshader</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -146,17 +146,20 @@
 <p>The harness can produce two types of errors:</p>
 <ul>
 <li>If the actual shader execution failed, this will manifest as a panic with exit code <code>101</code>.</li>
-<li>If the shader was successfully executed for all implementations but the outputs differ, the program will exit with code <code>1</code>.</li>
+<li>If the shader was successfully executed for all configurations but the outputs differ, the program will exit with code <code>1</code>.</li>
 </ul>
 <p>Otherwise, the program exits normally with code <code>0</code>.</p>
-<p>Normally when using this with a reduction tool, you will want to discard the shader if the harness returns <code>0</code> or <code>101</code>, since execution failure means that the reduction process probably produced an invalid program. Only the exits with <code>1</code> are likely to be interesting.</p>
+<p>Normally when using this with a reduction tool to find miscompilations, you will want to discard the shader if the harness returns <code>0</code> or <code>101</code>, since execution failure means that the reduction process probably produced an invalid program. Only the exits with <code>1</code> are likely to be interesting.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../harness/swiftshader.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../harness/configurations.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../harness/swiftshader.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
                     </nav>
@@ -164,8 +167,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../harness/swiftshader.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../harness/configurations.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../harness/swiftshader.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
 
