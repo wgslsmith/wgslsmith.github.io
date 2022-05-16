@@ -192,7 +192,7 @@ fn main() {
 }
 </code></pre>
 <p>The root object contains a single <code>resources</code> field which is an array of resource objects. Each resource object must specify its <code>group</code>, <code>binding</code> and <code>size</code> in bytes, as well as the <code>kind</code> which may be one of <code>UniformBuffer</code> or <code>StorageBuffer</code>. The <code>init</code> field can specify a byte array which will be used to initialise the buffer if not null. This is useful for specifying inputs.</p>
-<div class="admonition warning">
+<div id="admonition-alignment" class="admonition warning">
 <div class="admonition-title">
 <p>Alignment</p>
 </div>
