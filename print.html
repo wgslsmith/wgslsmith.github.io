@@ -148,16 +148,14 @@
 <ul>
 <li><a href="https://rustup.rs/">Rust</a></li>
 </ul>
-<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
-<p>This repo is divided into two workspaces - the top-level workspace contains the main tools for generating and reconditioning shaders, as well as driving fuzzing and test case reduction. These can be compiled by running the following:</p>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<p>Building and running the program generator can be done as follows:</p>
 <pre><code class="language-sh">$ git clone --recursive https://github.com/wgslsmith/wgslsmith
 $ cd wgslsmith
-$ cargo build --release
+$ cargo build -p generator --release
+$ target/release/generator --help
 </code></pre>
-<p>Then add the <code>bin</code> directory to your <code>PATH</code>. This will make the <code>wgslsmith</code> command available, which is the entrypoint to all the tools:</p>
-<pre><code class="language-sh">$ wgslsmith --help
-</code></pre>
-<p>In addition to this, the <code>harness</code> subdirectory contains the testing harness. This is organised as a separate workspace to improve cross-compilation workflows. Compiling this is a bit more complicated as it requires compiling dawn. See the <a href="https://wgslsmith.github.io/">docs</a> for detailed instructions.</p>
+<p>See the <a href="https://wgslsmith.github.io/">docs</a> for detailed instructions on building and using the test harness and fuzzing tools.</p>
 <h2 id="development"><a class="header" href="#development">Development</a></h2>
 <p><a href="https://github.com/mitsuhiko/insta">Insta</a> is used for snapshot testing the parser.</p>
 <p>Install the tool with <code>cargo install cargo-insta</code> and use <code>cargo insta test -p parser</code> to run the parser tests.</p>
