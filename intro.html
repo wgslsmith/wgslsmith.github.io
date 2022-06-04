@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html" class="active"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="harness/index.html"><strong aria-hidden="true">2.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="harness/building.html"><strong aria-hidden="true">2.1.</strong> Building</a></li><li class="chapter-item expanded "><a href="harness/usage.html"><strong aria-hidden="true">2.2.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="harness/configurations.html"><strong aria-hidden="true">2.3.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="harness/test-case-reduction.html"><strong aria-hidden="true">2.4.</strong> Test case reduction</a></li><li class="chapter-item expanded "><a href="harness/swiftshader.html"><strong aria-hidden="true">2.5.</strong> Swiftshader</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html" class="active"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="building.html"><strong aria-hidden="true">2.</strong> Building</a></li><li class="chapter-item expanded "><a href="harness/index.html"><strong aria-hidden="true">3.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="harness/usage.html"><strong aria-hidden="true">3.1.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="harness/configurations.html"><strong aria-hidden="true">3.2.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="harness/test-case-reduction.html"><strong aria-hidden="true">3.3.</strong> Test case reduction</a></li><li class="chapter-item expanded "><a href="harness/swiftshader.html"><strong aria-hidden="true">3.4.</strong> Swiftshader</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -150,14 +150,14 @@
 <ul>
 <li><a href="https://rustup.rs/">Rust</a></li>
 </ul>
-<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
-<p>Building and running the program generator can be done as follows:</p>
+<h2 id="building"><a class="header" href="#building">Building</a></h2>
+<p>Full instructions for building can be found in the <a href="https://wgslsmith.github.io/building.html">docs</a>.</p>
+<p>Alternatively, if you just want to build the generator (without having to build dawn) you can run:</p>
 <pre><code class="language-sh">$ git clone --recursive https://github.com/wgslsmith/wgslsmith
 $ cd wgslsmith
 $ cargo build -p generator --release
 $ target/release/generator --help
 </code></pre>
-<p>See the <a href="https://wgslsmith.github.io/">docs</a> for detailed instructions on building and using the test harness and fuzzing tools.</p>
 <h2 id="development"><a class="header" href="#development">Development</a></h2>
 <p><a href="https://github.com/mitsuhiko/insta">Insta</a> is used for snapshot testing the parser.</p>
 <p>Install the tool with <code>cargo install cargo-insta</code> and use <code>cargo insta test -p parser</code> to run the parser tests.</p>
@@ -171,7 +171,7 @@ $ target/release/generator --help
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="next" href="harness/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="building.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
@@ -180,7 +180,7 @@ $ target/release/generator --help
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="next" href="harness/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="building.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

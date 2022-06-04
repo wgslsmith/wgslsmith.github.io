@@ -77,7 +77,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="harness/index.html"><strong aria-hidden="true">2.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="harness/building.html"><strong aria-hidden="true">2.1.</strong> Building</a></li><li class="chapter-item expanded "><a href="harness/usage.html"><strong aria-hidden="true">2.2.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="harness/configurations.html"><strong aria-hidden="true">2.3.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="harness/test-case-reduction.html"><strong aria-hidden="true">2.4.</strong> Test case reduction</a></li><li class="chapter-item expanded "><a href="harness/swiftshader.html"><strong aria-hidden="true">2.5.</strong> Swiftshader</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="building.html"><strong aria-hidden="true">2.</strong> Building</a></li><li class="chapter-item expanded "><a href="harness/index.html"><strong aria-hidden="true">3.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="harness/usage.html"><strong aria-hidden="true">3.1.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="harness/configurations.html"><strong aria-hidden="true">3.2.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="harness/test-case-reduction.html"><strong aria-hidden="true">3.3.</strong> Test case reduction</a></li><li class="chapter-item expanded "><a href="harness/swiftshader.html"><strong aria-hidden="true">3.4.</strong> Swiftshader</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -148,14 +148,14 @@
 <ul>
 <li><a href="https://rustup.rs/">Rust</a></li>
 </ul>
-<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
-<p>Building and running the program generator can be done as follows:</p>
+<h2 id="building"><a class="header" href="#building">Building</a></h2>
+<p>Full instructions for building can be found in the <a href="https://wgslsmith.github.io/building.html">docs</a>.</p>
+<p>Alternatively, if you just want to build the generator (without having to build dawn) you can run:</p>
 <pre><code class="language-sh">$ git clone --recursive https://github.com/wgslsmith/wgslsmith
 $ cd wgslsmith
 $ cargo build -p generator --release
 $ target/release/generator --help
 </code></pre>
-<p>See the <a href="https://wgslsmith.github.io/">docs</a> for detailed instructions on building and using the test harness and fuzzing tools.</p>
 <h2 id="development"><a class="header" href="#development">Development</a></h2>
 <p><a href="https://github.com/mitsuhiko/insta">Insta</a> is used for snapshot testing the parser.</p>
 <p>Install the tool with <code>cargo install cargo-insta</code> and use <code>cargo insta test -p parser</code> to run the parser tests.</p>
@@ -164,42 +164,34 @@ $ target/release/generator --help
 <pre><code>$ git config core.hooksPath .githooks
 </code></pre>
 <p>Hooks currently assume that <a href="https://direnv.net/">direnv</a> is installed.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="harness"><a class="header" href="#harness">Harness</a></h1>
-<p>The test harness is used to run shader programs within a WebGPU pipeline. The harness is flexible and can be used for shaders with different inputs and outputs by providing a JSON description of the shader's I/O interface.</p>
-<p>The harness will execute the shaders against multiple WebGPU implementations/configurations and compare the outputs to detect mismatches.</p>
-<p>Currently, the harness only supports running compute shaders.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="building-the-harness"><a class="header" href="#building-the-harness">Building the harness</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="building-wgslsmith"><a class="header" href="#building-wgslsmith">Building wgslsmith</a></h1>
 <div id="admonition-info" class="admonition info">
 <div class="admonition-title">
 <p>Info</p>
 </div>
 <div>
-<p>Building for Windows is supported by cross compiling from Linux (ideally using <a href="https://docs.microsoft.com/en-us/windows/wsl/">WSL</a>), because I prefer working in WSL. It shouldn't be too hard to build everything natively on Windows but you're on your own.</p>
+<p>Building for Windows is supported by cross compiling from Linux (ideally using <a href="https://docs.microsoft.com/en-us/windows/wsl/">WSL</a>). It shouldn't be too hard to build everything natively on Windows, but you're on your own.</p>
 </div>
 </div>
-<h2 id="environment-variables"><a class="header" href="#environment-variables">Environment variables</a></h2>
-<p>There are a few environment variables that you need to set to get everything to build. The easiest thing would be to add them to your shell profile but I'd recommend using a tool like <a href="https://github.com/direnv/direnv">direnv</a> to manage them.</p>
 <h2 id="dawn"><a class="header" href="#dawn">Dawn</a></h2>
-<p>Before building the harness, you will need to grab and build a copy of <a href="https://dawn.googlesource.com/dawn">dawn</a>. You can use the helper script in <a href="https://github.com/wgslsmith/dawn-build">https://github.com/wgslsmith/dawn-build</a>.</p>
-<p>There are a few things you may need to set up first:</p>
+<p>The test harness depends on <a href="https://dawn.googlesource.com/dawn">dawn</a>, which has a few prerequisites for building:</p>
 <h3 id="cmake"><a class="header" href="#cmake">CMake</a></h3>
-<p>If you don't already have it:</p>
+<p>If you don't already have it, run the following (for Ubuntu):</p>
 <pre><code class="language-sh">$ sudo apt install cmake
 </code></pre>
-<p>on Ubuntu or <a href="https://cmake.org/download/">https://cmake.org/download/</a>.</p>
+<p>Otherwise, download it from <a href="https://cmake.org/download/">https://cmake.org/download/</a>.</p>
 <h3 id="depot_tools"><a class="header" href="#depot_tools">depot_tools</a></h3>
-<p>While you can use cmake to build dawn, you still need to install depot_tools to be able to fetch dawn's dependencies. Detailed instructions for how to do that can be found <a href="https://commondatastorage.googleapis.com/chrome-infra-docs/flat/depot_tools/docs/html/depot_tools_tutorial.html#_setting_up">here</a>. The gist of it is:</p>
+<p>Dawn uses depot_tools to fetch its dependencies. Detailed usage instructions can be found <a href="https://commondatastorage.googleapis.com/chrome-infra-docs/flat/depot_tools/docs/html/depot_tools_tutorial.html#_setting_up">here</a>. To install it:</p>
 <pre><code class="language-sh"># Clone the depot_tools repo somewhere on your system
 $ git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 # Add it to your PATH
 $ export PATH=/path/to/depot_tools:$PATH
 </code></pre>
 <h3 id="ninja"><a class="header" href="#ninja">Ninja</a></h3>
-<p>I'd recommend using the <a href="https://ninja-build.org/">ninja</a> build system generator with cmake to build dawn. You might be able to use other cmake generators, but they might not produce the right filesystem structure for the outputs which is expected by wgslsmith's build script.</p>
 <p>On Ubuntu:</p>
 <pre><code class="language-sh">$ sudo apt install ninja-build
 </code></pre>
-<p>Otherwise grab the binary from <a href="https://github.com/ninja-build/ninja/releases">https://github.com/ninja-build/ninja/releases</a> and add it your PATH.</p>
+<p>Otherwise, grab the binary from <a href="https://github.com/ninja-build/ninja/releases">https://github.com/ninja-build/ninja/releases</a> and add it your <code>PATH</code>.</p>
 <h3 id="linux-dependencies"><a class="header" href="#linux-dependencies">Linux dependencies</a></h3>
 <p>If you're building for Linux, you might need a few more dependencies. On Ubuntu, you can install the following packages:</p>
 <pre><code class="language-sh">$ sudo apt install libxrandr-dev libxinerama-dev libx11-dev \
@@ -207,63 +199,54 @@ $ export PATH=/path/to/depot_tools:$PATH
     libx11-xcb-dev
 </code></pre>
 <h3 id="windows-dependencies"><a class="header" href="#windows-dependencies">Windows dependencies</a></h3>
-<p>If you're targeting Windows, you need clang and llvm to cross compile for Windows' MSVC target. Dawn doesn't seem to work with mingw as of writing this.</p>
+<p>If you're targeting Windows, you need clang and llvm to cross compile for the MSVC target. Dawn doesn't seem to work with mingw as of writing this.</p>
 <pre><code class="language-sh">$ sudo apt install clang-12 clang-tools-12 llvm-12
 </code></pre>
-<p>You'll also need a copy of the Windows SDK headers and libraries. <a href="https://github.com/Jake-Shadle/xwin">xwin</a> is a super handy tool which can be used to download that on Linux. Install it from source or grab a binary from the releases, then run the following:</p>
+<p>You'll also need a copy of the Windows SDK headers and libraries. <a href="https://github.com/Jake-Shadle/xwin">xwin</a> is a super handy tool which can be used to download them on Linux. Install it from source or grab a binary from the releases, then run the following:</p>
 <pre><code class="language-sh">$ xwin splat --include-debug-libs --cache-dir /path/to/sdk
 </code></pre>
 <p>The <code>/path/to/sdk</code> can be anywhere on your system where you'd like to download the SDK.</p>
-<h3 id="do-the-build"><a class="header" href="#do-the-build">Do the build</a></h3>
-<p>First, clone the <code>dawn-build</code> repo which contains dawn as a submodule as well as a helper script to run the build.</p>
-<pre><code class="language-sh">$ git clone https://github.com/wgslsmith/dawn-build
-$ cd dawn-build
-</code></pre>
-<p>If building for Windows, you need to set a few environment variables:</p>
-<pre><code class="language-sh"># Instructs cmake to use our custom toolchain file for targeting MSVC
-export CMAKE_TOOLCHAIN_FILE=&quot;$(pwd)/cmake/WinMsvc.cmake&quot;
-# If you installed llvm on Ubuntu like above, this should be `/usr/lib/llvm-12`
+<h3 id="environment-variables"><a class="header" href="#environment-variables">Environment variables</a></h3>
+<p>If you're cross-compiling for Windows, you need to set a few environment variables. The easiest thing would be to add them to your shell profile, but I'd recommend using a tool like <a href="https://github.com/direnv/direnv">direnv</a> to avoid possible interference between projects.</p>
+<pre><code class="language-sh"># If you installed llvm on Ubuntu like above, this should be `/usr/lib/llvm-12`
 export LLVM_NATIVE_TOOLCHAIN=&quot;/path/to/llvm&quot;
 # This should be the path to wherever you downloaded the Windows SDK with xwin
 export XWIN_CACHE=&quot;/path/to/sdk&quot;
-</code></pre>
-<p>Finally, run the build script:</p>
-<pre><code class="language-sh">$ ./scripts/build
-</code></pre>
-<p>That will probably take a while to fetch dependencies and build everything. Once it's done, you should have a <code>build</code> folder in the root of the <code>dawn-build</code> repo. This should contain, among other things, a <code>gen</code> folder with some generated code files (the header files are the important bits) and a <code>lib</code> folder with a bunch of static libraries in it.</p>
-<h2 id="harness-1"><a class="header" href="#harness-1">Harness</a></h2>
-<p>Once you've built the dawn libraries, you can build the harness. First, there's a couple of environment variables to set:</p>
-<pre><code class="language-sh">export DAWN_SRC_DIR=&quot;/path/to/dawn-build/dawn&quot;
-export DAWN_BUILD_DIR=&quot;/path/to/dawn-build/build&quot;
-</code></pre>
-<p>If building for Windows, make sure to also set the following variables:</p>
-<pre><code class="language-sh">export CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS=&quot;\
-    -C linker=/path/to/llvm/bin/lld-link \
-    -Lnative=/path/to/sdk/splat/crt/lib/x86_64 \
-    -Lnative=/path/to/sdk/splat/sdk/lib/ucrt/x86_64 \
-    -Lnative=/path/to/sdk/splat/sdk/lib/um/x86_64&quot;
-export CXX_x86_64_pc_windows_msvc=&quot;/path/to/llvm/bin/clang-cl&quot;
+# These variables tell Cargo which C/C++ compiler and linker to use, and where to find
+# the Windows SDK
+export CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS=&quot;\
+    -C linker=$LLVM_NATIVE_TOOLCHAIN/bin/lld-link \
+    -Lnative=$XWIN_CACHE/splat/crt/lib/x86_64 \
+    -Lnative=$XWIN_CACHE/splat/sdk/lib/ucrt/x86_64 \
+    -Lnative=$XWIN_CACHE/splat/sdk/lib/um/x86_64&quot;
+export CXX_x86_64_pc_windows_msvc=&quot;$LLVM_NATIVE_TOOLCHAIN/bin/clang-cl&quot;
 export CXXFLAGS_x86_64_pc_windows_msvc=&quot;\
-    /imsvc /path/to/sdk/splat/crt/include \
-    /imsvc /path/to/sdk/splat/sdk/include/ucrt&quot;
-export AR_x86_64_pc_windows_msvc=&quot;/path/to/llvm/bin/llvm-lib&quot;
+    /imsvc $XWIN_CACHE/splat/crt/include \
+    /imsvc $XWIN_CACHE/splat/sdk/include/ucrt&quot;
+export AR_x86_64_pc_windows_msvc=&quot;$LLVM_NATIVE_TOOLCHAIN/bin/llvm-lib&quot;
 </code></pre>
-<p>Make sure to clone the <code>wgslsmith</code> repo with submodules:</p>
+<h2 id="building-1"><a class="header" href="#building-1">Building</a></h2>
+<p>Make sure to clone wgslsmith recursively to fetch the submodules:</p>
 <pre><code class="language-sh">$ git clone --recursive https://github.com/wgslsmith/wgslsmith
-# or in an existing repo
-$ git submodule update --init --recursive
+$ cd wgslsmith
 </code></pre>
-<p>Then, to build for the host platform, you can run:</p>
-<pre><code class="language-sh">$ cd harness
+<p>To build everything, run the following:</p>
+<pre><code class="language-sh">$ ./build.py
+</code></pre>
+<p>This will automatically fetch and build dawn, and then build wgslsmith and the harness.</p>
+<p>If you only want to build the harness, you can run:</p>
+<pre><code class="language-sh">$ ./build.py dawn
+$ cd harness
 $ cargo build --release
 </code></pre>
 <p>If cross compiling for Windows, you need to instead set the target explicitly:</p>
 <pre><code class="language-sh">$ cargo build --release --target x86_64-pc-windows-msvc
 </code></pre>
-<p>Alternatively, you can set the following environment variable to avoid needing to pass <code>--target &lt;target&gt;</code> explicitly on the command line:</p>
-<pre><code class="language-sh">export CARGO_BUILD_TARGET=&quot;x86_64-pc-windows-msvc&quot;
-</code></pre>
-<p>The harness executable will be contained in <code>harness/target/release</code> (or <code>harness/target/&lt;target&gt;/release</code> when cross compiling).</p>
+<p>The harness executable will be in <code>harness/target/release</code> (or <code>harness/target/&lt;target&gt;/release</code> when cross compiling).</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="harness"><a class="header" href="#harness">Harness</a></h1>
+<p>The test harness is used to run shader programs within a WebGPU pipeline. The harness is flexible and can be used for shaders with different inputs and outputs by providing a JSON description of the shader's I/O interface.</p>
+<p>The harness will execute the shaders against multiple WebGPU implementations/configurations and compare the outputs to detect mismatches.</p>
+<p>Currently, the harness only supports running compute shaders.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="basic-usage"><a class="header" href="#basic-usage">Basic usage</a></h1>
 <p>In the simplest case, you can just execute a shader by passing the path to the shader file to the harness executable. If no path is provided, the shader will be read from <code>stdin</code>.</p>
 <pre><code class="language-sh">$ harness run /path/to/shader.wgsl
