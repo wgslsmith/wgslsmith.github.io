@@ -152,7 +152,7 @@
 </ul>
 <h2 id="building"><a class="header" href="#building">Building</a></h2>
 <p>Full instructions for building can be found in the <a href="https://wgslsmith.github.io/building.html">docs</a>.</p>
-<p>To use, add the <code>bin</code> directory to your <code>PATH</code>, then:</p>
+<p>To install, add the <code>bin</code> directory to your <code>PATH</code>, then:</p>
 <pre><code class="language-sh">$ wgslsmith --help
 </code></pre>
 <p>Alternatively, if you just want to build the generator (without having to build dawn) you can run:</p>
@@ -161,6 +161,31 @@ $ cd wgslsmith
 $ cargo build -p generator --release
 $ target/release/generator --help
 </code></pre>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<p>All the tools can be used through the <code>wgslsmith</code> command:</p>
+<pre><code class="language-sh"># Do some fuzzing
+$ wgslsmith fuzz
+# Reduce a crash
+$ wgslsmith reduce crash path/to/shader.wgsl --config wgpu:dx12:9348 --regex '...'
+# Run a shader
+$ wgslsmith harness run path/to/shader.wgsl
+</code></pre>
+<p>Some options can be configured by adding a <code>wgslsmith.toml</code> file to the root of the repo.</p>
+<pre><code class="language-toml">[reducer]
+tmpdir = &quot;/home/hasan/dev/wgslsmith/tmp&quot;
+parallelism = 24
+
+[reducer.creduce]
+path = &quot;/optional/path/to/creduce&quot;
+
+[reducer.cvise]
+path = &quot;/optional/path/to/cvise&quot;
+
+[reducer.perses]
+# You need this if you want to reduce with perses
+jar = &quot;/path/to/perses_deploy.jar&quot;
+</code></pre>
+<p>To use perses for reduction, grab and build it from https://github.com/wgslsmith/perses, then add it to the config as above.</p>
 <h2 id="development"><a class="header" href="#development">Development</a></h2>
 <p><a href="https://github.com/mitsuhiko/insta">Insta</a> is used for snapshot testing the parser.</p>
 <p>Install the tool with <code>cargo install cargo-insta</code> and use <code>cargo insta test -p parser</code> to run the parser tests.</p>
