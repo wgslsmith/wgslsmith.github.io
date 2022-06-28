@@ -142,66 +142,33 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="basic-usage"><a class="header" href="#basic-usage">Basic usage</a></h1>
-<p>In the simplest case, you can just execute a shader by passing the path to the shader file to the harness executable. If no path is provided, the shader will be read from <code>stdin</code>.</p>
+<p>To execute a shader, run:</p>
 <pre><code class="language-sh">$ harness run /path/to/shader.wgsl
 </code></pre>
-<p>This works if the shader has no inputs or outputs, but will probably fail otherwise.</p>
-<p>More generally, two things are required to execute a shader:</p>
-<ol>
-<li>The WGSL source code</li>
-<li>A JSON metadata object describing the shader's resource interface</li>
-</ol>
-<p>The metadata will be used to setup the pipeline and required buffers, and optionally to initialise the buffer values.</p>
-<p>For example, the following shader contains a uniform buffer and a storage buffer, acting as the shader's inputs and outputs respectively. The shader has a single bind group, with <code>input</code> bound to slot 0 and <code>output</code> bound to slot 1. Refer to the <a href="https://gpuweb.github.io/gpuweb/#pipeline-layout">WebGPU docs</a> for more info about resource layouts.</p>
+<p>You can also supply input data to initialize any unfiform/storage buffers, by writing a json file of the form:</p>
+<pre><code class="language-json">{
+  &quot;{group}:{binding}&quot;: [1, 2, 3, ...]
+}
+</code></pre>
+<p>This contains a mapping from the buffer ID to a byte array containing the init data. The values of <code>group</code> and <code>binding</code> should be the corresponding attribute values in the WGSL program:</p>
 <pre><pre class="playground"><code class="language-rust">struct Buffer {
     value: u32,
 };
 
-@group(0)
-@binding(0)
+@group(0) @binding(0) // &lt;- 0:0
 var&lt;uniform&gt; input: Buffer;
 
-@group(0)
-@binding(1)
+@group(0) @binding(1) // &lt;- 0:1
 var&lt;storage, read_write&gt; output: Buffer;
 
-@stage(compute)
+@compute
 @workgroup_size(1)
 fn main() {
     output.value = input.value;
 }
 </code></pre></pre>
-<p>This shader can be described by the following metadata object:</p>
-<pre><code class="language-json">{
-  &quot;resources&quot;: [
-    {
-      &quot;kind&quot;: &quot;UniformBuffer&quot;,
-      &quot;group&quot;: 0,
-      &quot;binding&quot;: 0,
-      &quot;size&quot;: 4,
-      &quot;init&quot;: [100, 186, 236, 132]
-    },
-    {
-      &quot;kind&quot;: &quot;StorageBuffer&quot;,
-      &quot;group&quot;: 0,
-      &quot;binding&quot;: 1,
-      &quot;size&quot;: 4,
-      &quot;init&quot;: null
-    }
-  ]
-}
-</code></pre>
-<p>The root object contains a single <code>resources</code> field which is an array of resource objects. Each resource object must specify its <code>group</code>, <code>binding</code> and <code>size</code> in bytes, as well as the <code>kind</code> which may be one of <code>UniformBuffer</code> or <code>StorageBuffer</code>. The <code>init</code> field can specify a byte array which will be used to initialise the buffer if not null. This is useful for specifying inputs.</p>
-<div id="admonition-alignment" class="admonition warning">
-<div class="admonition-title">
-<p>Alignment</p>
-</div>
-<div>
-<p>WGSL has some strict rules about alignment for types used with uniform and storage buffers (see <a href="https://gpuweb.github.io/gpuweb/wgsl/#address-space-layout-constraints">here</a>). Make sure to consider this when calculating the size of buffers.</p>
-</div>
-</div>
 <p>By default, when executing a shader with an explicit path, the harness will look for a json file with the same name and parent directory as the shader. For example, given a shader file at <code>/path/to/shader.wgsl</code>, the harness will look for the metadata file at <code>/path/to/shader.json</code>.</p>
-<p>You can also specify the metadata file path explicitly by passing <code>/path/to/metadata.json</code> as the second positional argument on the command line, or even specify the json object inline: <code>'{&quot;resources&quot;: [...]}'</code>.</p>
+<p>You can also specify the inputs file path explicitly by passing <code>/path/to/inputs.json</code> as the second positional argument on the command line, or even specify the json object inline: <code>'{&quot;0:0&quot;: [...]}'</code>.</p>
 
                     </main>
 
