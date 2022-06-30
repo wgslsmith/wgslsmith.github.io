@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Swiftshader - wgslsmith</title>
+        <title>Validation Server - wgslsmith</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../building/index.html"><strong aria-hidden="true">2.</strong> Building</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../building/cross-compiling.html"><strong aria-hidden="true">2.1.</strong> Cross-compiling</a></li></ol></li><li class="chapter-item expanded "><a href="../harness/index.html"><strong aria-hidden="true">3.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../harness/usage.html"><strong aria-hidden="true">3.1.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="../harness/configurations.html"><strong aria-hidden="true">3.2.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="../harness/test-case-reduction.html"><strong aria-hidden="true">3.3.</strong> Test case reduction</a></li><li class="chapter-item expanded "><a href="../harness/swiftshader.html" class="active"><strong aria-hidden="true">3.4.</strong> Swiftshader</a></li></ol></li><li class="chapter-item expanded "><a href="../validator/index.html"><strong aria-hidden="true">4.</strong> Validation Server</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../building/index.html"><strong aria-hidden="true">2.</strong> Building</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../building/cross-compiling.html"><strong aria-hidden="true">2.1.</strong> Cross-compiling</a></li></ol></li><li class="chapter-item expanded "><a href="../harness/index.html"><strong aria-hidden="true">3.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../harness/usage.html"><strong aria-hidden="true">3.1.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="../harness/configurations.html"><strong aria-hidden="true">3.2.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="../harness/test-case-reduction.html"><strong aria-hidden="true">3.3.</strong> Test case reduction</a></li><li class="chapter-item expanded "><a href="../harness/swiftshader.html"><strong aria-hidden="true">3.4.</strong> Swiftshader</a></li></ol></li><li class="chapter-item expanded "><a href="../validator/index.html" class="active"><strong aria-hidden="true">4.</strong> Validation Server</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -114,7 +114,7 @@
                         <a href="https://github.com/wgslsmith/wgslsmith" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/wgslsmith/wgslsmith/edit/main/docs/src/harness/swiftshader.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/wgslsmith/wgslsmith/edit/main/docs/src/validator/index.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
                     </div>
@@ -141,18 +141,43 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="swiftshader"><a class="header" href="#swiftshader">Swiftshader</a></h1>
-<p>TODO</p>
+                        <h1 id="validation-server"><a class="header" href="#validation-server">Validation Server</a></h1>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#obtaining-the-compilers">Obtaining the compilers</a>
+<ul>
+<li><a href="#fxc">FXC</a></li>
+<li><a href="#metal">Metal</a></li>
+</ul>
+</li>
+<li><a href="#toolchain-setup">Toolchain setup</a></li>
+<li><a href="#usage">Usage</a></li>
+</ul>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>The FXC and Metal compilers can be used to validate HLSL and MSL shaders. Unfortunately neither of these tools are actually available for Linux, but it's possible to run them using <a href="https://www.winehq.org/">wine</a>.</p>
+<p>Running with wine has a startup cost of a few seconds, which can make program reduction significantly slower. We get around this by using a server for validating shaders. This is packaged along with a Wine installation in a docker container.</p>
+<h2 id="obtaining-the-compilers"><a class="header" href="#obtaining-the-compilers">Obtaining the compilers</a></h2>
+<h3 id="fxc"><a class="header" href="#fxc">FXC</a></h3>
+<p>The FXC dll is already included in the <code>tools</code> subdirectory of the wgslsmith repository.</p>
+<h3 id="metal"><a class="header" href="#metal">Metal</a></h3>
+<p>You can download the Metal Developer Tools for Windows from <a href="https://developer.apple.com/download/all/?q=metal">here</a>. You'll need an Apple ID to get access. Copy the installer to <code>tools/Metal_Developer_Tools.exe</code>.</p>
+<h2 id="toolchain-setup"><a class="header" href="#toolchain-setup">Toolchain setup</a></h2>
+<p>The validation server needs to be compiled for Windows. Following the instructions <a href="../building/cross-compiling.html#windows">here</a> to setup a cross-compilation environment on Linux.</p>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<p>Start the validation server using the following command. This will compile the server and then build and start a docker container containing wine and the compiler tools.</p>
+<pre><code class="language-sh">$ ./start-validation-server.sh
+</code></pre>
+<p>The default server port is 9123. Add this to your wgslsmith config file (using the <code>wgslsmith config</code> command).</p>
+<pre><code class="language-toml">[validator]
+server = &quot;localhost:9123&quot;
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../harness/test-case-reduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../harness/swiftshader.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
-                            </a>
-                            <a rel="next" href="../validator/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
                     </nav>
@@ -160,11 +185,8 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../harness/test-case-reduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../harness/swiftshader.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
-                    </a>
-                    <a rel="next" href="../validator/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
 

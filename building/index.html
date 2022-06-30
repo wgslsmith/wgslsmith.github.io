@@ -10,27 +10,27 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="././mdbook-admonish.css">
+        <link rel="stylesheet" href="../././mdbook-admonish.css">
     </head>
     <body>
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
-            var path_to_root = "";
+            var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="building.html" class="active"><strong aria-hidden="true">2.</strong> Building</a></li><li class="chapter-item expanded "><a href="harness/index.html"><strong aria-hidden="true">3.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="harness/usage.html"><strong aria-hidden="true">3.1.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="harness/configurations.html"><strong aria-hidden="true">3.2.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="harness/test-case-reduction.html"><strong aria-hidden="true">3.3.</strong> Test case reduction</a></li><li class="chapter-item expanded "><a href="harness/swiftshader.html"><strong aria-hidden="true">3.4.</strong> Swiftshader</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../building/index.html" class="active"><strong aria-hidden="true">2.</strong> Building</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../building/cross-compiling.html"><strong aria-hidden="true">2.1.</strong> Cross-compiling</a></li></ol></li><li class="chapter-item expanded "><a href="../harness/index.html"><strong aria-hidden="true">3.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../harness/usage.html"><strong aria-hidden="true">3.1.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="../harness/configurations.html"><strong aria-hidden="true">3.2.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="../harness/test-case-reduction.html"><strong aria-hidden="true">3.3.</strong> Test case reduction</a></li><li class="chapter-item expanded "><a href="../harness/swiftshader.html"><strong aria-hidden="true">3.4.</strong> Swiftshader</a></li></ol></li><li class="chapter-item expanded "><a href="../validator/index.html"><strong aria-hidden="true">4.</strong> Validation Server</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -108,13 +108,13 @@
                     <h1 class="menu-title">wgslsmith</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                         <a href="https://github.com/wgslsmith/wgslsmith" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/wgslsmith/wgslsmith/edit/main/docs/src/building.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/wgslsmith/wgslsmith/edit/main/docs/src/building/index.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
                     </div>
@@ -157,12 +157,11 @@
 <li><a href="#depot_tools">depot_tools</a></li>
 <li><a href="#ninja">Ninja</a></li>
 <li><a href="#linux-dependencies">Linux dependencies</a></li>
-<li><a href="#windows-dependencies">Windows dependencies</a></li>
-<li><a href="#environment-variables">Environment variables</a></li>
 </ul>
 </li>
+<li><a href="#windows">Windows</a></li>
 <li><a href="#building">Building</a></li>
-<li><a href="#installation">Installation</a></li>
+<li><a href="#installing">Installing</a></li>
 </ul>
 <h2 id="dawn-prerequisites"><a class="header" href="#dawn-prerequisites">Dawn Prerequisites</a></h2>
 <p>The test harness depends on <a href="https://dawn.googlesource.com/dawn">dawn</a>, which has a few prerequisites for building:</p>
@@ -189,33 +188,8 @@ $ export PATH=/path/to/depot_tools:$PATH
     libxcursor-dev libxi-dev libxext-dev libxcb-shm0-dev libxtst-dev \
     libx11-xcb-dev
 </code></pre>
-<h3 id="windows-dependencies"><a class="header" href="#windows-dependencies">Windows dependencies</a></h3>
-<p>If you're targeting Windows, you need clang and llvm to cross compile for the MSVC target. Dawn doesn't seem to work with mingw as of writing this.</p>
-<pre><code class="language-sh">$ sudo apt install clang-12 clang-tools-12 llvm-12
-</code></pre>
-<p>You'll also need a copy of the Windows SDK headers and libraries. <a href="https://github.com/Jake-Shadle/xwin">xwin</a> is a super handy tool which can be used to download them on Linux. Install it from source or grab a binary from the releases, then run the following:</p>
-<pre><code class="language-sh">$ xwin splat --include-debug-libs --cache-dir /path/to/sdk
-</code></pre>
-<p>The <code>/path/to/sdk</code> can be anywhere on your system where you'd like to download the SDK.</p>
-<h3 id="environment-variables"><a class="header" href="#environment-variables">Environment variables</a></h3>
-<p>If you're cross-compiling for Windows, you need to set a few environment variables. The easiest thing would be to add them to your shell profile, but I'd recommend using a tool like <a href="https://github.com/direnv/direnv">direnv</a> to avoid possible interference between projects.</p>
-<pre><code class="language-sh"># If you installed llvm on Ubuntu like above, this should be `/usr/lib/llvm-12`
-export LLVM_NATIVE_TOOLCHAIN=&quot;/path/to/llvm&quot;
-# This should be the path to wherever you downloaded the Windows SDK with xwin
-export XWIN_CACHE=&quot;/path/to/sdk&quot;
-# These variables tell Cargo which C/C++ compiler and linker to use, and where to find
-# the Windows SDK
-export CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS=&quot;\
-    -C linker=$LLVM_NATIVE_TOOLCHAIN/bin/lld-link \
-    -Lnative=$XWIN_CACHE/splat/crt/lib/x86_64 \
-    -Lnative=$XWIN_CACHE/splat/sdk/lib/ucrt/x86_64 \
-    -Lnative=$XWIN_CACHE/splat/sdk/lib/um/x86_64&quot;
-export CXX_x86_64_pc_windows_msvc=&quot;$LLVM_NATIVE_TOOLCHAIN/bin/clang-cl&quot;
-export CXXFLAGS_x86_64_pc_windows_msvc=&quot;\
-    /imsvc $XWIN_CACHE/splat/crt/include \
-    /imsvc $XWIN_CACHE/splat/sdk/include/ucrt&quot;
-export AR_x86_64_pc_windows_msvc=&quot;$LLVM_NATIVE_TOOLCHAIN/bin/llvm-lib&quot;
-</code></pre>
+<h2 id="windows"><a class="header" href="#windows">Windows</a></h2>
+<p>If cross-compiling for Windows, you'll also need to follow the instructions <a href="./cross-compiling.html">here</a> to set up the compiler and SDK.</p>
 <h2 id="building"><a class="header" href="#building">Building</a></h2>
 <p>Make sure to clone wgslsmith recursively to fetch the submodules:</p>
 <pre><code class="language-sh">$ git clone --recursive https://github.com/wgslsmith/wgslsmith
@@ -232,7 +206,7 @@ $ cd wgslsmith
 <pre><code class="language-sh">$ ./build.py harness [--target &lt;target&gt;]
 </code></pre>
 <p>Build output will be in <code>target/release</code> (or <code>cross-target/&lt;target&gt;/release</code> when cross compiling).</p>
-<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<h2 id="installing"><a class="header" href="#installing">Installing</a></h2>
 <p>To make the <code>wgslsmith</code> command available globally, run the following (after building):</p>
 <pre><code class="language-sh">$ ./build.py install [--install-prefix &lt;path&gt;]
 </code></pre>
@@ -242,10 +216,10 @@ $ cd wgslsmith
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="intro.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../intro.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                            <a rel="next" href="harness/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../building/cross-compiling.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
@@ -254,10 +228,10 @@ $ cd wgslsmith
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="intro.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../intro.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                    <a rel="next" href="harness/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../building/cross-compiling.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
@@ -267,12 +241,12 @@ $ cd wgslsmith
         <script type="text/javascript">
             window.playground_copyable = true;
         </script>
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
     </body>

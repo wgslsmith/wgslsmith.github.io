@@ -77,7 +77,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="building.html"><strong aria-hidden="true">2.</strong> Building</a></li><li class="chapter-item expanded "><a href="harness/index.html"><strong aria-hidden="true">3.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="harness/usage.html"><strong aria-hidden="true">3.1.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="harness/configurations.html"><strong aria-hidden="true">3.2.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="harness/test-case-reduction.html"><strong aria-hidden="true">3.3.</strong> Test case reduction</a></li><li class="chapter-item expanded "><a href="harness/swiftshader.html"><strong aria-hidden="true">3.4.</strong> Swiftshader</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="building/index.html"><strong aria-hidden="true">2.</strong> Building</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="building/cross-compiling.html"><strong aria-hidden="true">2.1.</strong> Cross-compiling</a></li></ol></li><li class="chapter-item expanded "><a href="harness/index.html"><strong aria-hidden="true">3.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="harness/usage.html"><strong aria-hidden="true">3.1.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="harness/configurations.html"><strong aria-hidden="true">3.2.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="harness/test-case-reduction.html"><strong aria-hidden="true">3.3.</strong> Test case reduction</a></li><li class="chapter-item expanded "><a href="harness/swiftshader.html"><strong aria-hidden="true">3.4.</strong> Swiftshader</a></li></ol></li><li class="chapter-item expanded "><a href="validator/index.html"><strong aria-hidden="true">4.</strong> Validation Server</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -149,7 +149,7 @@
 <li><a href="https://rustup.rs/">Rust</a></li>
 </ul>
 <h2 id="building"><a class="header" href="#building">Building</a></h2>
-<p>Full instructions for building can be found in the <a href="https://wgslsmith.github.io/building.html">docs</a>.</p>
+<p>Full instructions for building can be found in the <a href="https://wgslsmith.github.io/building/index.html">docs</a>.</p>
 <p>Alternatively, if you just want to build the generator (without having to build dawn) you can run:</p>
 <pre><code class="language-sh">$ git clone --recursive https://github.com/wgslsmith/wgslsmith
 $ cd wgslsmith
@@ -201,18 +201,17 @@ jar = &quot;/path/to/perses_deploy.jar&quot;
 </div>
 </div>
 <ul>
-<li><a href="building.html#dawn-prerequisites">Dawn Prerequisites</a>
+<li><a href="building/index.html#dawn-prerequisites">Dawn Prerequisites</a>
 <ul>
-<li><a href="building.html#cmake">CMake</a></li>
-<li><a href="building.html#depot_tools">depot_tools</a></li>
-<li><a href="building.html#ninja">Ninja</a></li>
-<li><a href="building.html#linux-dependencies">Linux dependencies</a></li>
-<li><a href="building.html#windows-dependencies">Windows dependencies</a></li>
-<li><a href="building.html#environment-variables">Environment variables</a></li>
+<li><a href="building/index.html#cmake">CMake</a></li>
+<li><a href="building/index.html#depot_tools">depot_tools</a></li>
+<li><a href="building/index.html#ninja">Ninja</a></li>
+<li><a href="building/index.html#linux-dependencies">Linux dependencies</a></li>
 </ul>
 </li>
-<li><a href="building.html#building">Building</a></li>
-<li><a href="building.html#installation">Installation</a></li>
+<li><a href="building/index.html#windows">Windows</a></li>
+<li><a href="building/index.html#building">Building</a></li>
+<li><a href="building/index.html#installing">Installing</a></li>
 </ul>
 <h2 id="dawn-prerequisites"><a class="header" href="#dawn-prerequisites">Dawn Prerequisites</a></h2>
 <p>The test harness depends on <a href="https://dawn.googlesource.com/dawn">dawn</a>, which has a few prerequisites for building:</p>
@@ -239,33 +238,8 @@ $ export PATH=/path/to/depot_tools:$PATH
     libxcursor-dev libxi-dev libxext-dev libxcb-shm0-dev libxtst-dev \
     libx11-xcb-dev
 </code></pre>
-<h3 id="windows-dependencies"><a class="header" href="#windows-dependencies">Windows dependencies</a></h3>
-<p>If you're targeting Windows, you need clang and llvm to cross compile for the MSVC target. Dawn doesn't seem to work with mingw as of writing this.</p>
-<pre><code class="language-sh">$ sudo apt install clang-12 clang-tools-12 llvm-12
-</code></pre>
-<p>You'll also need a copy of the Windows SDK headers and libraries. <a href="https://github.com/Jake-Shadle/xwin">xwin</a> is a super handy tool which can be used to download them on Linux. Install it from source or grab a binary from the releases, then run the following:</p>
-<pre><code class="language-sh">$ xwin splat --include-debug-libs --cache-dir /path/to/sdk
-</code></pre>
-<p>The <code>/path/to/sdk</code> can be anywhere on your system where you'd like to download the SDK.</p>
-<h3 id="environment-variables"><a class="header" href="#environment-variables">Environment variables</a></h3>
-<p>If you're cross-compiling for Windows, you need to set a few environment variables. The easiest thing would be to add them to your shell profile, but I'd recommend using a tool like <a href="https://github.com/direnv/direnv">direnv</a> to avoid possible interference between projects.</p>
-<pre><code class="language-sh"># If you installed llvm on Ubuntu like above, this should be `/usr/lib/llvm-12`
-export LLVM_NATIVE_TOOLCHAIN=&quot;/path/to/llvm&quot;
-# This should be the path to wherever you downloaded the Windows SDK with xwin
-export XWIN_CACHE=&quot;/path/to/sdk&quot;
-# These variables tell Cargo which C/C++ compiler and linker to use, and where to find
-# the Windows SDK
-export CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS=&quot;\
-    -C linker=$LLVM_NATIVE_TOOLCHAIN/bin/lld-link \
-    -Lnative=$XWIN_CACHE/splat/crt/lib/x86_64 \
-    -Lnative=$XWIN_CACHE/splat/sdk/lib/ucrt/x86_64 \
-    -Lnative=$XWIN_CACHE/splat/sdk/lib/um/x86_64&quot;
-export CXX_x86_64_pc_windows_msvc=&quot;$LLVM_NATIVE_TOOLCHAIN/bin/clang-cl&quot;
-export CXXFLAGS_x86_64_pc_windows_msvc=&quot;\
-    /imsvc $XWIN_CACHE/splat/crt/include \
-    /imsvc $XWIN_CACHE/splat/sdk/include/ucrt&quot;
-export AR_x86_64_pc_windows_msvc=&quot;$LLVM_NATIVE_TOOLCHAIN/bin/llvm-lib&quot;
-</code></pre>
+<h2 id="windows"><a class="header" href="#windows">Windows</a></h2>
+<p>If cross-compiling for Windows, you'll also need to follow the instructions <a href="building/./cross-compiling.html">here</a> to set up the compiler and SDK.</p>
 <h2 id="building-1"><a class="header" href="#building-1">Building</a></h2>
 <p>Make sure to clone wgslsmith recursively to fetch the submodules:</p>
 <pre><code class="language-sh">$ git clone --recursive https://github.com/wgslsmith/wgslsmith
@@ -282,11 +256,33 @@ $ cd wgslsmith
 <pre><code class="language-sh">$ ./build.py harness [--target &lt;target&gt;]
 </code></pre>
 <p>Build output will be in <code>target/release</code> (or <code>cross-target/&lt;target&gt;/release</code> when cross compiling).</p>
-<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<h2 id="installing"><a class="header" href="#installing">Installing</a></h2>
 <p>To make the <code>wgslsmith</code> command available globally, run the following (after building):</p>
 <pre><code class="language-sh">$ ./build.py install [--install-prefix &lt;path&gt;]
 </code></pre>
 <p>This will create a symlink to <code>target/release/wgslsmith</code>, so you don't need to rerun it every time you rebuild. Use the <code>--install-prefix</code> option to specify the directory to install in (defaults to <code>/usr/local/bin</code>).</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="cross-compiling"><a class="header" href="#cross-compiling">Cross-compiling</a></h1>
+<ul>
+<li><a href="building/cross-compiling.html#windows">Windows</a></li>
+</ul>
+<h2 id="windows-1"><a class="header" href="#windows-1">Windows</a></h2>
+<p>Windows is supported through cross-compilation using llvm's msvc target.</p>
+<p>Add the msvc target to your rust toolchain with rustup:</p>
+<pre><code class="language-sh">$ rustup target add x86_64-pc-windows-msvc
+</code></pre>
+<p>Install the clang and llvm packages (on Ubuntu):</p>
+<pre><code class="language-sh">$ sudo apt install clang-12 clang-tools-12 llvm-12
+</code></pre>
+<p>You'll also need a copy of the Windows SDK headers and libraries. <a href="https://github.com/Jake-Shadle/xwin">xwin</a> is a super handy tool which can be used to download them on Linux. Install it from source or grab a binary from the releases, then run the following:</p>
+<pre><code class="language-sh">$ xwin splat --include-debug-libs --cache-dir /path/to/sdk
+</code></pre>
+<p>The <code>/path/to/sdk</code> can be anywhere on your system where you'd like to download the SDK.</p>
+<p>Also, make sure to set these environment variables:</p>
+<pre><code class="language-sh"># If you installed llvm on Ubuntu like above, this should be `/usr/lib/llvm-12`
+export LLVM_NATIVE_TOOLCHAIN=&quot;/path/to/llvm&quot;
+# This should be the path to wherever you downloaded the Windows SDK with xwin
+export XWIN_CACHE=&quot;/path/to/sdk&quot;
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="harness"><a class="header" href="#harness">Harness</a></h1>
 <p>The test harness is used to run shader programs within a WebGPU pipeline. The harness is flexible and can be used for shaders with different inputs and outputs by providing a JSON description of the shader's I/O interface.</p>
 <p>The harness will execute the shaders against multiple WebGPU implementations/configurations and compare the outputs to detect mismatches.</p>
@@ -362,6 +358,36 @@ ok
 <p>Normally when using this with a reduction tool to find miscompilations, you will want to discard the shader if the harness returns <code>0</code> or <code>101</code>, since execution failure means that the reduction process probably produced an invalid program. Only the exits with <code>1</code> are likely to be interesting.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="swiftshader"><a class="header" href="#swiftshader">Swiftshader</a></h1>
 <p>TODO</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="validation-server"><a class="header" href="#validation-server">Validation Server</a></h1>
+<ul>
+<li><a href="validator/index.html#overview">Overview</a></li>
+<li><a href="validator/index.html#obtaining-the-compilers">Obtaining the compilers</a>
+<ul>
+<li><a href="validator/index.html#fxc">FXC</a></li>
+<li><a href="validator/index.html#metal">Metal</a></li>
+</ul>
+</li>
+<li><a href="validator/index.html#toolchain-setup">Toolchain setup</a></li>
+<li><a href="validator/index.html#usage">Usage</a></li>
+</ul>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>The FXC and Metal compilers can be used to validate HLSL and MSL shaders. Unfortunately neither of these tools are actually available for Linux, but it's possible to run them using <a href="https://www.winehq.org/">wine</a>.</p>
+<p>Running with wine has a startup cost of a few seconds, which can make program reduction significantly slower. We get around this by using a server for validating shaders. This is packaged along with a Wine installation in a docker container.</p>
+<h2 id="obtaining-the-compilers"><a class="header" href="#obtaining-the-compilers">Obtaining the compilers</a></h2>
+<h3 id="fxc"><a class="header" href="#fxc">FXC</a></h3>
+<p>The FXC dll is already included in the <code>tools</code> subdirectory of the wgslsmith repository.</p>
+<h3 id="metal"><a class="header" href="#metal">Metal</a></h3>
+<p>You can download the Metal Developer Tools for Windows from <a href="https://developer.apple.com/download/all/?q=metal">here</a>. You'll need an Apple ID to get access. Copy the installer to <code>tools/Metal_Developer_Tools.exe</code>.</p>
+<h2 id="toolchain-setup"><a class="header" href="#toolchain-setup">Toolchain setup</a></h2>
+<p>The validation server needs to be compiled for Windows. Following the instructions <a href="validator/../building/cross-compiling.html#windows">here</a> to setup a cross-compilation environment on Linux.</p>
+<h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
+<p>Start the validation server using the following command. This will compile the server and then build and start a docker container containing wine and the compiler tools.</p>
+<pre><code class="language-sh">$ ./start-validation-server.sh
+</code></pre>
+<p>The default server port is 9123. Add this to your wgslsmith config file (using the <code>wgslsmith config</code> command).</p>
+<pre><code class="language-toml">[validator]
+server = &quot;localhost:9123&quot;
+</code></pre>
 
                     </main>
 
