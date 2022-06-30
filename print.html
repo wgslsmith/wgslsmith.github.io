@@ -264,15 +264,23 @@ $ cd wgslsmith
 <pre><code class="language-sh">$ ./build.py
 </code></pre>
 <p>This will automatically fetch and build dawn, and then build wgslsmith and the harness.</p>
-<p>If you only want to build the harness, you can run:</p>
-<pre><code class="language-sh">$ ./build.py dawn
-$ cd harness
-$ cargo build --release
-</code></pre>
 <p>If cross compiling for Windows, you need to instead set the target explicitly:</p>
-<pre><code class="language-sh">$ cargo build --release --target x86_64-pc-windows-msvc
+<pre><code class="language-sh">$ ./build.py --target x86_64-pc-windows-msvc
 </code></pre>
-<p>The harness executable will be in <code>harness/target/release</code> (or <code>harness/target/&lt;target&gt;/release</code> when cross compiling).</p>
+<p>If you only want to build the harness, you can run:</p>
+<pre><code class="language-sh">$ ./build.py harness [--target &lt;target&gt;]
+</code></pre>
+<p>Build output will be in <code>target/release</code> (or <code>cross-target/&lt;target&gt;/release</code> when cross compiling).</p>
+<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<p>To make the <code>wgslsmith</code> command available globally, add the <code>bin</code> directory to your <code>PATH</code>.</p>
+<div id="admonition-info-1" class="admonition info">
+<div class="admonition-title">
+<p>Info</p>
+</div>
+<div>
+<p>The <code>wgslsmith</code> command only works if you didn't cross-compile wgslsmith.</p>
+</div>
+</div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="harness"><a class="header" href="#harness">Harness</a></h1>
 <p>The test harness is used to run shader programs within a WebGPU pipeline. The harness is flexible and can be used for shaders with different inputs and outputs by providing a JSON description of the shader's I/O interface.</p>
 <p>The harness will execute the shaders against multiple WebGPU implementations/configurations and compare the outputs to detect mismatches.</p>
