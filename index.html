@@ -152,9 +152,6 @@
 </ul>
 <h2 id="building"><a class="header" href="#building">Building</a></h2>
 <p>Full instructions for building can be found in the <a href="https://wgslsmith.github.io/building.html">docs</a>.</p>
-<p>To install, add the <code>bin</code> directory to your <code>PATH</code>, then:</p>
-<pre><code class="language-sh">$ wgslsmith --help
-</code></pre>
 <p>Alternatively, if you just want to build the generator (without having to build dawn) you can run:</p>
 <pre><code class="language-sh">$ git clone --recursive https://github.com/wgslsmith/wgslsmith
 $ cd wgslsmith
@@ -172,7 +169,7 @@ $ wgslsmith reduce crash path/to/shader.wgsl --config wgpu:dx12:9348 --regex '..
 # Run a shader
 $ wgslsmith harness run path/to/shader.wgsl
 </code></pre>
-<p>Some options can be configured by adding a <code>wgslsmith.toml</code> file to the root of the repo.</p>
+<p>Some options can be configured through a config file. Run <code>wgslsmith config</code> to open the default config file in a text editor. You can also specify a custom config file with the <code>--config-file</code> option.</p>
 <pre><code class="language-toml">[reducer]
 tmpdir = &quot;/home/hasan/dev/wgslsmith/tmp&quot;
 parallelism = 24
