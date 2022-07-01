@@ -191,6 +191,7 @@ jar = &quot;/path/to/perses_deploy.jar&quot;
 <div id="admonition-info" class="admonition info">
 <div class="admonition-title">
 <p>Info</p>
+<p><a class="admonition-anchor-link" href="building/index.html#admonition-info"></a></p>
 </div>
 <div>
 <p>Building for Windows is supported by cross compiling from Linux (ideally using <a href="https://docs.microsoft.com/en-us/windows/wsl/">WSL</a>). It shouldn't be too hard to build everything natively on Windows, but you're on your own.</p>
@@ -210,7 +211,7 @@ jar = &quot;/path/to/perses_deploy.jar&quot;
 <li><a href="building/index.html#installing">Installing</a></li>
 </ul>
 <h2 id="dawn-prerequisites"><a class="header" href="#dawn-prerequisites">Dawn Prerequisites</a></h2>
-<p>The test harness depends on <a href="https://dawn.googlesource.com/dawn">dawn</a>, which has a few prerequisites for building:</p>
+<p>The test harness and program reduction tools depend on <a href="https://dawn.googlesource.com/dawn">dawn</a>, which has a few prerequisites for building. If you don't want to build those tools, you can skip this bit.</p>
 <h3 id="cmake"><a class="header" href="#cmake">CMake</a></h3>
 <p>If you don't already have it, run the following (for Ubuntu):</p>
 <pre><code class="language-sh">$ sudo apt install cmake
@@ -244,12 +245,15 @@ $ cd wgslsmith
 <p>To build everything, run the following:</p>
 <pre><code class="language-sh">$ ./build.py
 </code></pre>
-<p>This will automatically fetch and build dawn, and then build wgslsmith and the harness.</p>
-<p>If cross compiling for Windows, you need to instead set the target explicitly:</p>
+<p>This will automatically build dawn, and then build wgslsmith.</p>
+<p>You can also disable some features if you don't want to build dawn and wgpu:</p>
+<pre><code class="language-sh">$ ./build.py --no-reducer --no-harness
+</code></pre>
+<p>If cross compiling for Windows, you need to set the target explicitly:</p>
 <pre><code class="language-sh">$ ./build.py --target x86_64-pc-windows-msvc
 </code></pre>
-<p>If you only want to build the harness, you can run:</p>
-<pre><code class="language-sh">$ ./build.py harness [--target &lt;target&gt;]
+<p>It's possible to build the harness as a standalone tool:</p>
+<pre><code class="language-sh">$ ./build.py harness
 </code></pre>
 <p>Build output will be in <code>target/release</code> (or <code>cross-target/&lt;target&gt;/release</code> when cross compiling).</p>
 <h2 id="installing"><a class="header" href="#installing">Installing</a></h2>
@@ -257,6 +261,7 @@ $ cd wgslsmith
 <pre><code class="language-sh">$ ./build.py install [--install-prefix &lt;path&gt;]
 </code></pre>
 <p>This will create a symlink to <code>target/release/wgslsmith</code>, so you don't need to rerun it every time you rebuild. Use the <code>--install-prefix</code> option to specify the directory to install in (defaults to <code>/usr/local/bin</code>).</p>
+<p>Alternatively you can just put the binary somewhere on your <code>PATH</code>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="cross-compiling"><a class="header" href="#cross-compiling">Cross-compiling</a></h1>
 <ul>
 <li><a href="building/cross-compiling.html#windows">Windows</a></li>
