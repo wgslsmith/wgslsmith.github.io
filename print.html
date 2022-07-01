@@ -320,7 +320,7 @@ fn main() {
 <p>The harness will execute the input shader against one or more configurations, and compare the results of the output buffers for each configuration to detect possible miscompilation bugs.</p>
 <p>A configuration is defined as the combination of a WebGPU implementation (such as dawn or wgpu) and a graphics adapter. The graphics adapter is identified by its backend type (D3D12, Metal, Vulkan) and a platform-specific integer identifier for the device.</p>
 <p>Use the <code>list</code> subcommand to get a list of available configurations on your machine.</p>
-<pre><code class="language-sh">$ wgslsmith list executors
+<pre><code class="language-sh">$ wgslsmith harness list
 ID             | Adapter Name
 ---------------+------------------------------
 wgpu:vk:9348   | NVIDIA GeForce RTX 3070
