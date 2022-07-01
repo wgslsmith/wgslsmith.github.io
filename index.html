@@ -168,7 +168,7 @@ $ wgslsmith recondition /path/to/shader.wgsl
 # Reduce a crash
 $ wgslsmith reduce crash path/to/shader.wgsl --config wgpu:dx12:9348 --regex '...'
 # Run a shader
-$ wgslsmith harness run path/to/shader.wgsl
+$ wgslsmith run path/to/shader.wgsl
 </code></pre>
 <p>Some options can be configured through a config file. Run <code>wgslsmith config</code> to open the default config file in a text editor. You can also specify a custom config file with the <code>--config-file</code> option.</p>
 <pre><code class="language-toml">[reducer]
@@ -189,11 +189,6 @@ jar = &quot;/path/to/perses_deploy.jar&quot;
 <h2 id="development"><a class="header" href="#development">Development</a></h2>
 <p><a href="https://github.com/mitsuhiko/insta">Insta</a> is used for snapshot testing the parser.</p>
 <p>Install the tool with <code>cargo install cargo-insta</code> and use <code>cargo insta test -p parser</code> to run the parser tests.</p>
-<h3 id="git-hooks"><a class="header" href="#git-hooks">Git Hooks</a></h3>
-<p>To setup git hooks, run:</p>
-<pre><code>$ git config core.hooksPath .githooks
-</code></pre>
-<p>Hooks currently assume that <a href="https://direnv.net/">direnv</a> is installed.</p>
 
                     </main>
 
