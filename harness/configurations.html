@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../building/index.html"><strong aria-hidden="true">2.</strong> Building</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../building/cross-compiling.html"><strong aria-hidden="true">2.1.</strong> Cross-compiling</a></li></ol></li><li class="chapter-item expanded "><a href="../harness/index.html"><strong aria-hidden="true">3.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../harness/usage.html"><strong aria-hidden="true">3.1.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="../harness/configurations.html" class="active"><strong aria-hidden="true">3.2.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="../harness/test-case-reduction.html"><strong aria-hidden="true">3.3.</strong> Test case reduction</a></li><li class="chapter-item expanded "><a href="../harness/swiftshader.html"><strong aria-hidden="true">3.4.</strong> Swiftshader</a></li></ol></li><li class="chapter-item expanded "><a href="../validator/index.html"><strong aria-hidden="true">4.</strong> Validation Server</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../building/index.html"><strong aria-hidden="true">2.</strong> Building</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../building/cross-compiling.html"><strong aria-hidden="true">2.1.</strong> Cross-compiling</a></li></ol></li><li class="chapter-item expanded "><a href="../harness/index.html"><strong aria-hidden="true">3.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../harness/usage.html"><strong aria-hidden="true">3.1.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="../harness/configurations.html" class="active"><strong aria-hidden="true">3.2.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="../harness/exit-codes.html"><strong aria-hidden="true">3.3.</strong> Exit codes</a></li></ol></li><li class="chapter-item expanded "><a href="../validator/index.html"><strong aria-hidden="true">4.</strong> Validation Server</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -145,7 +145,7 @@
 <p>The harness will execute the input shader against one or more configurations, and compare the results of the output buffers for each configuration to detect possible miscompilation bugs.</p>
 <p>A configuration is defined as the combination of a WebGPU implementation (such as dawn or wgpu) and a graphics adapter. The graphics adapter is identified by its backend type (D3D12, Metal, Vulkan) and a platform-specific integer identifier for the device.</p>
 <p>Use the <code>list</code> subcommand to get a list of available configurations on your machine.</p>
-<pre><code class="language-sh">$ harness list
+<pre><code class="language-sh">$ wgslsmith list executors
 ID             | Adapter Name
 ---------------+------------------------------
 wgpu:vk:9348   | NVIDIA GeForce RTX 3070
@@ -158,7 +158,7 @@ dawn:vk:9348   | NVIDIA GeForce RTX 3070
 <p>On my machine there are three adapters available, corresponding to hardware Vulkan and D3D12 implementations as well as a D3D12 software implementation. The configuration IDs consist of the WebGPU implementation, the backend type, and the PCI ID for the adapter.</p>
 <p>By default, the harness will attempt to find the first available adapter for each combination of WebGPU implementation and backend type. Thus, all configurations above will be selected except for the D3D12 software adapter.</p>
 <p>To specify configurations manually, you can pass them on the command line using the <code>-c</code> option.</p>
-<pre><code class="language-sh">$ harness run test.wgsl -c wgpu:dx12:140 -c dawn:dx12:140 -c dawn:vk:9348
+<pre><code class="language-sh">$ wgslsmith run test.wgsl -c wgpu:dx12:140 -c dawn:dx12:140 -c dawn:vk:9348
 executing wgpu:dx12:140
 outputs:
   0: [2, 0, 0, 0]
@@ -181,7 +181,7 @@ ok
                             <a rel="prev" href="../harness/usage.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                            <a rel="next" href="../harness/test-case-reduction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../harness/exit-codes.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
@@ -193,7 +193,7 @@ ok
                     <a rel="prev" href="../harness/usage.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                    <a rel="next" href="../harness/test-case-reduction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../harness/exit-codes.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
