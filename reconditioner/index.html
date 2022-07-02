@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Building - wgslsmith</title>
+        <title>Reconditioner - wgslsmith</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../building/index.html" class="active"><strong aria-hidden="true">2.</strong> Building</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../building/cross-compiling.html"><strong aria-hidden="true">2.1.</strong> Cross-compiling</a></li></ol></li><li class="chapter-item expanded "><a href="../generator/index.html"><strong aria-hidden="true">3.</strong> Generator</a></li><li class="chapter-item expanded "><a href="../reconditioner/index.html"><strong aria-hidden="true">4.</strong> Reconditioner</a></li><li class="chapter-item expanded "><a href="../harness/index.html"><strong aria-hidden="true">5.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../harness/usage.html"><strong aria-hidden="true">5.1.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="../harness/configurations.html"><strong aria-hidden="true">5.2.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="../harness/exit-codes.html"><strong aria-hidden="true">5.3.</strong> Exit codes</a></li></ol></li><li class="chapter-item expanded "><a href="../validator/index.html"><strong aria-hidden="true">6.</strong> Validation Server</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../building/index.html"><strong aria-hidden="true">2.</strong> Building</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../building/cross-compiling.html"><strong aria-hidden="true">2.1.</strong> Cross-compiling</a></li></ol></li><li class="chapter-item expanded "><a href="../generator/index.html"><strong aria-hidden="true">3.</strong> Generator</a></li><li class="chapter-item expanded "><a href="../reconditioner/index.html" class="active"><strong aria-hidden="true">4.</strong> Reconditioner</a></li><li class="chapter-item expanded "><a href="../harness/index.html"><strong aria-hidden="true">5.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../harness/usage.html"><strong aria-hidden="true">5.1.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="../harness/configurations.html"><strong aria-hidden="true">5.2.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="../harness/exit-codes.html"><strong aria-hidden="true">5.3.</strong> Exit codes</a></li></ol></li><li class="chapter-item expanded "><a href="../validator/index.html"><strong aria-hidden="true">6.</strong> Validation Server</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -114,7 +114,7 @@
                         <a href="https://github.com/wgslsmith/wgslsmith" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/wgslsmith/wgslsmith/edit/main/docs/src/building/index.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/wgslsmith/wgslsmith/edit/main/docs/src/reconditioner/index.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
                     </div>
@@ -141,90 +141,21 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="building-wgslsmith"><a class="header" href="#building-wgslsmith">Building wgslsmith</a></h1>
-<div id="admonition-info" class="admonition info">
-<div class="admonition-title">
-<p>Info</p>
-<p><a class="admonition-anchor-link" href="#admonition-info"></a></p>
-</div>
-<div>
-<p>Building for Windows is supported by cross compiling from Linux (ideally using <a href="https://docs.microsoft.com/en-us/windows/wsl/">WSL</a>). It shouldn't be too hard to build everything natively on Windows, but you're on your own.</p>
-</div>
-</div>
-<ul>
-<li><a href="#dawn-prerequisites">Dawn Prerequisites</a>
-<ul>
-<li><a href="#cmake">CMake</a></li>
-<li><a href="#depot_tools">depot_tools</a></li>
-<li><a href="#ninja">Ninja</a></li>
-<li><a href="#linux-dependencies">Linux dependencies</a></li>
-</ul>
-</li>
-<li><a href="#windows">Windows</a></li>
-<li><a href="#building">Building</a></li>
-<li><a href="#installing">Installing</a></li>
-</ul>
-<h2 id="dawn-prerequisites"><a class="header" href="#dawn-prerequisites">Dawn Prerequisites</a></h2>
-<p>The test harness and program reduction tools depend on <a href="https://dawn.googlesource.com/dawn">dawn</a>, which has a few prerequisites for building. If you don't want to build those tools, you can skip this bit.</p>
-<h3 id="cmake"><a class="header" href="#cmake">CMake</a></h3>
-<p>If you don't already have it, run the following (for Ubuntu):</p>
-<pre><code class="language-sh">$ sudo apt install cmake
+                        <h1 id="reconditioner"><a class="header" href="#reconditioner">Reconditioner</a></h1>
+<p>wgslsmith uses a simple technique called reconditioning to remove certain unwanted behaviour from programs (such as out-of-bounds array accesses and infinite loops). This involves a tool called a reconditioner, which validates and transforms shaders to add safety checks around potentially dangerous operations. The advantage of using a separate tool rather than implementing this in the generator is that it enables using off-the-shelf program reduction tools such as C-Reduce and Perses.</p>
+<pre><code class="language-sh"># Recondition a shader
+$ wgslsmith recondition path/to/shader.wgsl
 </code></pre>
-<p>Otherwise, download it from <a href="https://cmake.org/download/">https://cmake.org/download/</a>.</p>
-<h3 id="depot_tools"><a class="header" href="#depot_tools">depot_tools</a></h3>
-<p>Dawn uses depot_tools to fetch its dependencies. Detailed usage instructions can be found <a href="https://commondatastorage.googleapis.com/chrome-infra-docs/flat/depot_tools/docs/html/depot_tools_tutorial.html#_setting_up">here</a>. To install it:</p>
-<pre><code class="language-sh"># Clone the depot_tools repo somewhere on your system
-$ git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
-# Add it to your PATH
-$ export PATH=/path/to/depot_tools:$PATH
-</code></pre>
-<h3 id="ninja"><a class="header" href="#ninja">Ninja</a></h3>
-<p>On Ubuntu:</p>
-<pre><code class="language-sh">$ sudo apt install ninja-build
-</code></pre>
-<p>Otherwise, grab the binary from <a href="https://github.com/ninja-build/ninja/releases">https://github.com/ninja-build/ninja/releases</a> and add it your <code>PATH</code>.</p>
-<h3 id="linux-dependencies"><a class="header" href="#linux-dependencies">Linux dependencies</a></h3>
-<p>If you're building for Linux, you might need a few more dependencies. On Ubuntu, you can install the following packages:</p>
-<pre><code class="language-sh">$ sudo apt install libxrandr-dev libxinerama-dev libx11-dev \
-    libxcursor-dev libxi-dev libxext-dev libxcb-shm0-dev libxtst-dev \
-    libx11-xcb-dev
-</code></pre>
-<h2 id="windows"><a class="header" href="#windows">Windows</a></h2>
-<p>If cross-compiling for Windows, you'll also need to follow the instructions <a href="./cross-compiling.html">here</a> to set up the compiler and SDK.</p>
-<h2 id="building"><a class="header" href="#building">Building</a></h2>
-<p>Make sure to clone wgslsmith recursively to fetch the submodules:</p>
-<pre><code class="language-sh">$ git clone --recursive https://github.com/wgslsmith/wgslsmith
-$ cd wgslsmith
-</code></pre>
-<p>To build everything, run the following:</p>
-<pre><code class="language-sh">$ ./build.py
-</code></pre>
-<p>This will automatically build dawn, and then build wgslsmith.</p>
-<p>You can also disable some features if you don't want to build dawn and wgpu:</p>
-<pre><code class="language-sh">$ ./build.py --no-reducer --no-harness
-</code></pre>
-<p>If cross compiling for Windows, you need to set the target explicitly:</p>
-<pre><code class="language-sh">$ ./build.py --target x86_64-pc-windows-msvc
-</code></pre>
-<p>It's possible to build the harness as a standalone tool:</p>
-<pre><code class="language-sh">$ ./build.py harness
-</code></pre>
-<p>Build output will be in <code>target/release</code> (or <code>cross-target/&lt;target&gt;/release</code> when cross compiling).</p>
-<h2 id="installing"><a class="header" href="#installing">Installing</a></h2>
-<p>To make the <code>wgslsmith</code> command available globally, run the following (after building):</p>
-<pre><code class="language-sh">$ ./build.py install [--install-prefix &lt;path&gt;]
-</code></pre>
-<p>This will create a symlink to <code>target/release/wgslsmith</code>, so you don't need to rerun it every time you rebuild. Use the <code>--install-prefix</code> option to specify the directory to install in (defaults to <code>/usr/local/bin</code>).</p>
-<p>Alternatively you can just put the binary somewhere on your <code>PATH</code>.</p>
+<p>The reconditioner can be used to guarantee loop termination, which is important for making sure that programs can be compiled as some compilers reject obvious infinite loops. If you only want to enforce loop terminate without any other runtime checks, pass <code>--enable loop-limiters</code> to the reconditioner.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../intro.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../generator/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                            <a rel="next" href="../building/cross-compiling.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../harness/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
@@ -233,10 +164,10 @@ $ cd wgslsmith
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../intro.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../generator/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                    <a rel="next" href="../building/cross-compiling.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../harness/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
