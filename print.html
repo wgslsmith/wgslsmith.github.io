@@ -77,7 +77,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="building/index.html"><strong aria-hidden="true">2.</strong> Building</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="building/cross-compiling.html"><strong aria-hidden="true">2.1.</strong> Cross-compiling</a></li></ol></li><li class="chapter-item expanded "><a href="generator/index.html"><strong aria-hidden="true">3.</strong> Generator</a></li><li class="chapter-item expanded "><a href="reconditioner/index.html"><strong aria-hidden="true">4.</strong> Reconditioner</a></li><li class="chapter-item expanded "><a href="harness/index.html"><strong aria-hidden="true">5.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="harness/usage.html"><strong aria-hidden="true">5.1.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="harness/configurations.html"><strong aria-hidden="true">5.2.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="harness/exit-codes.html"><strong aria-hidden="true">5.3.</strong> Exit codes</a></li></ol></li><li class="chapter-item expanded "><a href="validator/index.html"><strong aria-hidden="true">6.</strong> Validation Server</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="building/index.html"><strong aria-hidden="true">2.</strong> Building</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="building/cross-compiling.html"><strong aria-hidden="true">2.1.</strong> Cross-compiling</a></li></ol></li><li class="chapter-item expanded "><a href="generator/index.html"><strong aria-hidden="true">3.</strong> Generator</a></li><li class="chapter-item expanded "><a href="reconditioner/index.html"><strong aria-hidden="true">4.</strong> Reconditioner</a></li><li class="chapter-item expanded "><a href="harness/index.html"><strong aria-hidden="true">5.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="harness/usage.html"><strong aria-hidden="true">5.1.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="harness/configurations.html"><strong aria-hidden="true">5.2.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="harness/exit-codes.html"><strong aria-hidden="true">5.3.</strong> Exit codes</a></li><li class="chapter-item expanded "><a href="harness/remote-execution.html"><strong aria-hidden="true">5.4.</strong> Remote execution</a></li></ol></li><li class="chapter-item expanded "><a href="validator/index.html"><strong aria-hidden="true">6.</strong> Validation Server</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -311,7 +311,7 @@ $ wgslsmith recondition path/to/shader.wgsl
 <p>The reconditioner can be used to guarantee loop termination, which is important for making sure that programs can be compiled as some compilers reject obvious infinite loops. If you only want to enforce loop terminate without any other runtime checks, pass <code>--enable loop-limiters</code> to the reconditioner.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="harness"><a class="header" href="#harness">Harness</a></h1>
 <p>The test harness is used to run shader programs within a WebGPU pipeline. The harness is flexible and can be used for shaders with different inputs and outputs by providing a JSON description of the shader's I/O interface.</p>
-<p>The harness will execute the shaders against multiple WebGPU implementations/configurations and compare the outputs to detect mismatches.</p>
+<p>The harness will execute the shaders against multiple WebGPU implementations/configurations and compare the outputs to detect mismatches. It can also run in server mode to enable remote execution on a separate machine.</p>
 <p>Currently, the harness only supports running compute shaders.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="basic-usage"><a class="header" href="#basic-usage">Basic usage</a></h1>
 <p>To execute a shader, run:</p>
@@ -382,6 +382,40 @@ ok
 </ul>
 <p>Otherwise, the program exits normally with code <code>0</code>.</p>
 <p>Normally when using this with a reduction tool to find miscompilations, you will want to discard the shader if the harness returns <code>0</code> or <code>101</code>, since execution failure means that the reduction process probably produced an invalid program. Only the exits with <code>1</code> are likely to be interesting.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="remote-execution"><a class="header" href="#remote-execution">Remote execution</a></h1>
+<p>The harness supports remote execution over a TCP connection, to enable running shaders on a separate device such as an Android smartphone or across a VM boundary (e.g. WSL to Windows host). This is done by running the harness as a server, which receives requests to execute a shader against a set of configurations.</p>
+<p>To enable this, wgslsmith should be compiled for both the target machine as well as the client. It is also possible to compile the harness as a standalone tool to run on the execution server (without the other fuzzing tools) as described <a href="harness/../building/index.html#building">here</a>.</p>
+<div id="admonition-warning" class="admonition warning">
+<div class="admonition-title">
+<p>Warning</p>
+<p><a class="admonition-anchor-link" href="harness/remote-execution.html#admonition-warning"></a></p>
+</div>
+<div>
+<p>You must ensure that the the client and server are both compiled from the same git commit. No stability guarantees are currently made for the communication protocol, so there may be breaking changes between versions.</p>
+</div>
+</div>
+<p>Use the <code>serve</code> subcommand to start the server.</p>
+<pre><code class="language-sh">$ wgslsmith harness serve -a 0.0.0.0:1234
+</code></pre>
+<p>The <code>remote</code> subcommand can then be used to interact with the server. The command syntax is identical to local harness usage.</p>
+<pre><code class="language-sh">$ wgslsmith remote 192.168.1.23:1234 list
+$ wgslsmith remote 192.168.1.23:1234 run path/to/shader.wgsl
+</code></pre>
+<p>Note that the first argument to <code>remote</code> is the address of the server to connect to. For convenience, wgslsmith allows you to create friendly names for addresses and to set a default address. This is done through a configuration file (open it in your editor by running <code>wgslsmith config</code>).</p>
+<pre><code class="language-toml"># wgslsmith.toml
+
+# Define a remote server called 'android-phone'
+[remote.android-phone]
+address = &quot;192.168.1.23:1234&quot;
+
+[harness]
+remote = &quot;android-phone&quot; # Set 'android-phone' as the default remote
+</code></pre>
+<p>This will allow you to connect to the remote using:</p>
+<pre><code class="language-sh">$ wgslsmith remote android-phone run shader.wgsl
+# or
+$ wgslsmith remote run shader.wgsl
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="validation-server"><a class="header" href="#validation-server">Validation Server</a></h1>
 <ul>
 <li><a href="validator/index.html#overview">Overview</a></li>
