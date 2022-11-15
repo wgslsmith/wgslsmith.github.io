@@ -77,7 +77,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="building/index.html"><strong aria-hidden="true">2.</strong> Building</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="building/cross-compiling.html"><strong aria-hidden="true">2.1.</strong> Cross-compiling</a></li></ol></li><li class="chapter-item expanded "><a href="generator/index.html"><strong aria-hidden="true">3.</strong> Generator</a></li><li class="chapter-item expanded "><a href="reconditioner/index.html"><strong aria-hidden="true">4.</strong> Reconditioner</a></li><li class="chapter-item expanded "><a href="harness/index.html"><strong aria-hidden="true">5.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="harness/usage.html"><strong aria-hidden="true">5.1.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="harness/configurations.html"><strong aria-hidden="true">5.2.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="harness/exit-codes.html"><strong aria-hidden="true">5.3.</strong> Exit codes</a></li><li class="chapter-item expanded "><a href="harness/remote-execution.html"><strong aria-hidden="true">5.4.</strong> Remote execution</a></li></ol></li><li class="chapter-item expanded "><a href="validator/index.html"><strong aria-hidden="true">6.</strong> Validation Server</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="building/index.html"><strong aria-hidden="true">2.</strong> Building</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="building/cross-compiling.html"><strong aria-hidden="true">2.1.</strong> Cross-compiling</a></li></ol></li><li class="chapter-item expanded "><a href="generator/index.html"><strong aria-hidden="true">3.</strong> Generator</a></li><li class="chapter-item expanded "><a href="reconditioner/index.html"><strong aria-hidden="true">4.</strong> Reconditioner</a></li><li class="chapter-item expanded "><a href="harness/index.html"><strong aria-hidden="true">5.</strong> Harness</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="harness/usage.html"><strong aria-hidden="true">5.1.</strong> Basic usage</a></li><li class="chapter-item expanded "><a href="harness/configurations.html"><strong aria-hidden="true">5.2.</strong> Configurations</a></li><li class="chapter-item expanded "><a href="harness/exit-codes.html"><strong aria-hidden="true">5.3.</strong> Exit codes</a></li><li class="chapter-item expanded "><a href="harness/remote-execution.html"><strong aria-hidden="true">5.4.</strong> Remote execution</a></li></ol></li><li class="chapter-item expanded "><a href="reducer/index.html"><strong aria-hidden="true">6.</strong> Reducer</a></li><li class="chapter-item expanded "><a href="validator/index.html"><strong aria-hidden="true">7.</strong> Validation Server</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -417,6 +417,45 @@ remote = &quot;android-phone&quot; # Set 'android-phone' as the default remote
 # or
 $ wgslsmith remote run shader.wgsl
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="reducer"><a class="header" href="#reducer">Reducer</a></h1>
+<p>wgslsmith is able to integrate with a number of off-the-shelf program reduction tools to reduce WGSL programs that exhibit compilation crashes or have mismatching output buffers during differential testing. Currently, the following tools are supported:</p>
+<ul>
+<li><a href="https://github.com/csmith-project/creduce">C-Reduce</a></li>
+<li><a href="https://github.com/marxin/cvise">C-Vise</a></li>
+<li><a href="https://github.com/perses-project/perses">Perses</a></li>
+<li><a href="https://github.com/renatahodovan/picire">Picire</a></li>
+</ul>
+<p>Perses tends to work the best thanks to its syntax-aware approach, though C-Reduce also works very well. If you want to use Perses, you must use <a href="https://github.com/wgslsmith/perses">this fork</a> which includes the WGSL grammar, and add the following to your wgslsmith config file (open it in your editor by running <code>wgslsmith config</code>):</p>
+<pre><code class="language-toml">[reducer.perses]
+jar = &quot;/path/to/perses_deploy.jar&quot;
+</code></pre>
+<p>The other tools can be installed by following their respective documentation.</p>
+<p>To reduce WGSL programs use the <code>reduce</code> command:</p>
+<pre><code class="language-sh">$ wgslsmith reduce --help
+</code></pre>
+<div id="admonition-warning" class="admonition warning">
+<div class="admonition-title">
+<p>Warning</p>
+<p><a class="admonition-anchor-link" href="reducer/index.html#admonition-warning"></a></p>
+</div>
+<div>
+<p>The reducer can only be run on Linux at the moment (although it can still reduce shaders for all supported platforms). Windows support is tracked in <a href="https://github.com/wgslsmith/wgslsmith/issues/22">#22</a>. To reduce shaders for another platform, use the harness in <a href="reducer/../harness/remote-execution.html">server mode</a> or the validation tools described below.</p>
+</div>
+</div>
+<p>For reducing mismatches, there are no extra required arguments other than the path to the shader and input data. For crashes, wgslsmith supports two approaches described below. In both cases you must provide the <code>--regex &lt;REGEX&gt;</code> option to specify a regex to match against the crash output (e.g. an error code that you're interested in).</p>
+<h2 id="using-the-harness"><a class="header" href="#using-the-harness">Using the harness</a></h2>
+<p>The obvious way is to use the harness to attempt to execute the shader and check if it crashes. In this case, you will need to provide the <code>--config &lt;CONFIG&gt;</code> option with a config string that produces the crash (see <a href="reducer/../harness/configurations.html">here</a>).</p>
+<h2 id="using-standalone-validation-tools"><a class="header" href="#using-standalone-validation-tools">Using standalone validation tools</a></h2>
+<p>Executing the shaders can be relatively slow and requires access to the platform that has the bug. Instead, there are existing tools that can be used to validate HLSL, MSL and SPIR-V shaders generated by WGSL compilers. To use this, you will need to set up the validation server as described <a href="reducer/../validator/index.html">here</a>. Then pass the <code>--compiler &lt;COMPILER&gt;</code> and <code>--backend &lt;BACKEND&gt;</code> options to the reduce command.</p>
+<div id="admonition-warning-1" class="admonition warning">
+<div class="admonition-title">
+<p>Warning</p>
+<p><a class="admonition-anchor-link" href="reducer/index.html#admonition-warning-1"></a></p>
+</div>
+<div>
+<p>SPIR-V is not yet supported with the validation tools. This is tracked in <a href="https://github.com/wgslsmith/wgslsmith/issues/23">#23</a>.</p>
+</div>
+</div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="validation-server"><a class="header" href="#validation-server">Validation Server</a></h1>
 <ul>
 <li><a href="validator/index.html#overview">Overview</a></li>
