@@ -151,14 +151,14 @@
 <pre><code class="language-sh">$ rustup target add x86_64-pc-windows-msvc
 </code></pre>
 <p>Install the clang and llvm packages (on Ubuntu):</p>
-<pre><code class="language-sh">$ sudo apt install clang-12 clang-tools-12 llvm-12
+<pre><code class="language-sh">$ sudo apt install clang-14 clang-tools-14 llvm-14 lld-14
 </code></pre>
 <p>You'll also need a copy of the Windows SDK headers and libraries. <a href="https://github.com/Jake-Shadle/xwin">xwin</a> is a super handy tool which can be used to download them on Linux. Install it from source or grab a binary from the releases, then run the following:</p>
-<pre><code class="language-sh">$ xwin splat --include-debug-libs --cache-dir /path/to/sdk
+<pre><code class="language-sh">$ xwin splat --include-debug-libs --output /path/to/sdk
 </code></pre>
 <p>The <code>/path/to/sdk</code> can be anywhere on your system where you'd like to download the SDK.</p>
 <p>Also, make sure to set these environment variables:</p>
-<pre><code class="language-sh"># If you installed llvm on Ubuntu like above, this should be `/usr/lib/llvm-12`
+<pre><code class="language-sh"># If you installed llvm on Ubuntu like above, this should be `/usr/lib/llvm-14`
 export LLVM_NATIVE_TOOLCHAIN=&quot;/path/to/llvm&quot;
 # This should be the path to wherever you downloaded the Windows SDK with xwin
 export XWIN_CACHE=&quot;/path/to/sdk&quot;
